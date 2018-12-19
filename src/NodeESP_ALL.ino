@@ -1,4 +1,4 @@
-#define VERSION "v1.4_16122018"
+#define VERSION "v1.4_16122018-Smarthome"
 #define SPIFFS_VERSION "v1.2_16122018"
 
 #include <SPIFFS.h>
