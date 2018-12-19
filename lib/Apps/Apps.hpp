@@ -13,10 +13,8 @@
 
 #include "Peripherals.hpp"
 
-
 #include "APP_iot18.hpp"
 #include "APP_examples.hpp"
-
 
 //app_cmd_handler_s* app_cmd_handler[] = NULL;
 
