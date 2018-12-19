@@ -1,11 +1,7 @@
 #ifndef CONFIG_H_APP
 #define CONFIG_H_APP
 
-//#define AUTORMODE
-//#ifdef AUTORMODE
-#define MQTT_ID "[PID]"
-//#endif
-
+#define MQTT_ID_AUTHOR "[PID]" //only in AUTHORMODE
 #define RESEST_PIN 13
 
 #include <ArduinoJson.h>   //https://arduinojson.org/assistant/?utm_source=github&utm_medium=issues
@@ -147,13 +143,14 @@ bool loadConfiguration() {
         JsonObject& mqtt_set_json = root["mqtt_set"];
         load_mqtt_set(mqtt_set_json);
 
-        //#ifdef AUTORMODE Serial.println("Authmode")
+        //Fix for Authormode Bug
+        #ifndef AUTHORMODE
         String auth_id = "[PID]";
         if (String(mqtt_set.client_id) == auth_id) {
                 Serial.println("Fix Author MQTT ID");
                 def_loaded = true;
         }
-        //#endif
+        #endif
 
         if (def_loaded) dflt_set_mqtt(); //only on default load
 
@@ -284,8 +281,8 @@ void load_mqtt_set(JsonObject &root){
         mqtt_set.server_address =  root["server_address"];
         mqtt_set.port  =  root["port"];
 
-        #ifdef AUTORMODE
-        mqtt_set.client_id = MQTT_ID;
+        #ifdef AUTHORMODE
+        mqtt_set.client_id = MQTT_ID_AUTHOR;
         #else
         mqtt_set.client_id = root["client_id"];
         #endif
