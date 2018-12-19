@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-#define VERSION "v1.4_16122018-Smarthome"
-=======
 /**
  * Generall Informations
  *
@@ -10,7 +7,6 @@
 
 //Current Version of APP, Spiff version is saved in config
 #define VERSION "v1.4_16122018"
->>>>>>> refs/remotes/origin/master
 #define SPIFFS_VERSION "v1.2_16122018"
 
 #include <SPIFFS.h>
@@ -23,18 +19,13 @@
 void setup() {
         Serial.begin(115200);
         Serial.setDebugOutput(true);
-<<<<<<< HEAD
         Serial.println("\n\nRUN\n");
 
-=======
-        Serial.println("\n\nRUN");
-
         #ifdef AUTHORMODE
-          Serial.println("Author Mode!"); 
+          Serial.println("Author Mode!");
         #endif
 
         //initialise the RGB LED to show status
->>>>>>> refs/remotes/origin/master
         statusLedInit();
 
         //Spiffs is the file system on the Board. It includes every file from the onboard website and the config
