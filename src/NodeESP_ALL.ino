@@ -1,8 +1,6 @@
 #define VERSION "v1.4_16122018"
 #define SPIFFS_VERSION "v1.2_16122018"
 
-#define CURRENT_TIME "115200"
-
 #include <SPIFFS.h>
 
 #include "StatusLed.hpp"    //Status LED functions
@@ -15,9 +13,6 @@ void setup() {
         Serial.begin(115200);
         Serial.setDebugOutput(true);
         Serial.println("\n\nRUN\n");
-
-
-        Serial.printf("Time: %s\n",CURRENT_TIME);
 
         statusLedInit();
 
