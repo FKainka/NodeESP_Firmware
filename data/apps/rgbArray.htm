@@ -1,0 +1,288 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NodeESP</title>
+	<link rel="stylesheet" href="../style.css">
+	<script src="../scripts/ws.js"></script>
+	<script src="../scripts/auto.js"></script>
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Color Matrix</h1>
+	</header>
+
+	<article>
+
+		<details open>
+			<summary>Colors</summary>
+			<hr>
+			<form id="rgb_matrix" align=middle>
+
+			</form>
+			<hr>
+			<form id="get_pixel_bright" align=middle>
+				<input value="Brightness" class="label" disabled size=10><input type="range" min="0" max="255" value=10 data-auto onchange="sendForm(this.form);" id="brightness">
+			</form>
+			<hr>
+			<form id="get_pixel_array" align=middle>
+
+			</form>
+			<div align=middle>
+				<input type="button" class="btn" value="Submit" onclick="createJsonRgbArray(document.getElementById('get_pixel_array'));">
+			</div>
+			<br>
+		</details>
+
+		<details>
+			<summary>Settings</summary>
+			<form id="get_pixel_set" align=middle>
+				<input value="LED Type" class="label" disabled size=12>
+				<select class="slct" style="width: 10%;" data-auto id="type">
+					<option value=1 >Rgb</option>
+					<option value=2 >Grb</option>
+					<option value=3 >Rgbw</option>
+					<option value=4 >Grbw</option>
+				</select>
+				<br>
+				<input value="Number of LEDs" class="label" disabled size=12><input type=number min="1" class="slct" style="width: 10%;" data-auto id="number">
+				<br>
+				<input value="Max Brightness" class="label" disabled size=12>
+				<input type="range" max="255" value=100 style="width: 20%;" data-auto id="max_brightness" onchange="document.getElementById(this.id+'_label').value=this.value">
+				<input class="label round" disabled size=2 id="max_brightness_label">
+				<br>
+				<input type="button" class="btn" value="Submit" onclick="sendForm(this.form);">
+			</form>
+		</details>
+
+	</article>
+
+	<footer class="headfood">
+		<br><br>
+		<div class="fooder_text">
+	</footer>
+
+	<script language="JavaScript">
+		var connection = connect();
+
+		//Test
+		//		var nummerLeds = 30;
+		//		createUi(nummerLeds);
+
+		function createUi(nummerLeds) {
+			addColorElement("rgb_matrix", 1, nummerLeds);
+			addColorArray("get_pixel_array", nummerLeds, "rgb_");
+		}
+
+		function clearUi() {
+			var myNode = document.getElementById("rgb_matrix");
+			while (myNode.firstChild) {
+				myNode.removeChild(myNode.firstChild);
+			}
+
+			myNode = document.getElementById("get_pixel_array");
+			while (myNode.firstChild) {
+				myNode.removeChild(myNode.firstChild);
+			}
+		}
+
+
+		function addColorArray(parent, number, namePrefix) {
+			// Adds an element to the document
+			var p = document.getElementById(parent);
+
+			for (var i = 1; i <= number; i++) {
+				var elementId = namePrefix + i;
+				var newElement = document.createElement("input");
+				newElement.setAttribute('id', elementId);
+				newElement.setAttribute('type', "color");
+				p.appendChild(newElement);
+				if ((i > 0) && ((i % 10) == 0)) {
+					var newElement = document.createElement("br");
+					p.appendChild(newElement);
+				}
+
+			}
+
+		}
+
+		function changeOnColor(color) {
+			var color_id = color.id;
+			var range_id = color_id.replace("color_", "range_");
+			var label_id = range_id.replace("range_", "label_");
+
+			var id_nr = parseInt(color_id.replace("color_rgb_", ""));
+
+			var startPos = 1;
+			for (var i = 1; i < id_nr; i++) {
+				startPos = parseInt(startPos) + parseInt(document.getElementById("range_rgb_" + i).value);
+			}
+			var endPos = parseInt(startPos) + parseInt(document.getElementById(range_id).value);
+			for (var i = startPos; i < endPos; i++) {
+				document.getElementById("rgb_" + i).value = color.value;
+			}
+
+		}
+
+		function changeOnRange(range) {
+			var range_id = range.id;
+			var label_id = range_id.replace("range_", "label_");
+			var color_id = range_id.replace("range_", "color_");
+
+			var id_nr = parseInt(range_id.replace("range_rgb_", ""));
+			var id_nr_next = parseInt(id_nr + 1);
+			var id_nr_prev = parseInt(id_nr - 1);
+
+			var range_id_next = range_id.replace(id_nr, id_nr_next);
+			var label_id_next = label_id.replace(id_nr, id_nr_next);
+			var color_id_next = color_id.replace(id_nr, id_nr_next);
+
+			var range_id_prev = range_id.replace(id_nr, id_nr_prev);
+			var label_id_prev = label_id.replace(id_nr, id_nr_prev);
+			var color_id_prev = color_id.replace(id_nr, id_nr_prev);
+
+			var label_value = document.getElementById(label_id).value;
+			var range_value = document.getElementById(range_id).value;
+			var delta = label_value - range_value;
+
+			document.getElementById(label_id).value = range_value;
+
+			if (range_value > 0) { //wert über 0, splittung
+				var range_next = document.getElementById(range_id_next);
+
+				if (range_next === null) { //gibt kein nächstes-> mach neues
+					id_nr++;
+					document.getElementById(range_id).max = range_value;
+					addColorElement("rgb_matrix", id_nr, delta);
+					range.min = 1;
+				} else { // gibt ein neues -> veränder werte
+					range_next.max = parseInt(range_next.max) + parseInt(delta);
+					range_next.value = range_next.max;
+					document.getElementById(label_id_next).value = range_next.max;
+				}
+			} else { //Wert 0 -> merge
+				var prev_range = document.getElementById(range_id_prev);
+
+				if (prev_range !== null) { //gibt ein vorheriges Element, update und löschen derzeit
+					prev_range.max = parseInt(prev_range.value) + parseInt(delta);
+					prev_range.value = prev_range.max;
+					prev_range.min = 0;
+					document.getElementById(label_id_prev).value = prev_range.max;
+
+					var range = document.getElementById(range_id);
+					var label = document.getElementById(label_id);
+					var color = document.getElementById(color_id);
+					var br = document.getElementById(color_id.replace("color_", "br_"));
+					range.parentNode.removeChild(range);
+					label.parentNode.removeChild(label);
+					color.parentNode.removeChild(color);
+					br.parentNode.removeChild(br);
+				}
+			}
+		}
+
+		function changeOnText(label) {
+			var label_id = label.id;
+			var range_id = label_id.replace("label_", "range_");
+			var range = document.getElementById(range_id);
+			var color_id = range_id.replace("range_", "color_");
+			if (parseInt(label.value) < range.max) {
+				range.value = label.value;
+				label.value = range.max;
+				changeOnRange(range);
+			} else {
+				label.value = range.max;
+			}
+		}
+
+
+		function addColorElement(parent, i, max) {
+			// Adds an element to the document
+			var p = document.getElementById(parent);
+
+			var newColor = document.createElement("input");
+			newColor.setAttribute('id', "color_rgb_" + i);
+			newColor.setAttribute('type', "color");
+			newColor.setAttribute('onChange', "changeOnColor(this);");
+
+			var newRange = document.createElement("input");
+			newRange.setAttribute('id', "range_rgb_" + i);
+			newRange.setAttribute('type', "range");
+			newRange.setAttribute('min', 0);
+			newRange.setAttribute('max', max);
+			newRange.setAttribute('value', max);
+			newRange.setAttribute('onChange', "changeOnRange(this);");
+			newRange.style.margin = 15;
+
+			var newLabel = document.createElement("input");
+			newLabel.setAttribute('id', "label_rgb_" + i);
+			newLabel.setAttribute('class', "label round");
+			newLabel.setAttribute('size', 2);
+			newLabel.setAttribute('value', max);
+			newLabel.setAttribute('onChange', "changeOnText(this);");
+
+			var newElement = document.createElement("br");
+			newElement.setAttribute('id', "br_rgb_" + i);
+			p.appendChild(newColor);
+			p.appendChild(newRange);
+			p.appendChild(newLabel);
+			p.appendChild(newElement);
+		}
+
+		function createJsonRgbArray(form) {
+			var msg = {};
+			msg["cmd"] = "set_pixel_array";
+
+			var colors = [];
+			for (var i = 0, d, v; i < form.elements.length; i++) {
+				d = form.elements[i].value;
+				colors.push(d);
+			}
+			//	console.log(colors);
+			msg["rgb_array"] = colors;
+			console.log(msg);
+			connection.send(JSON.stringify(msg));
+		}
+
+
+
+		function onConnect() {
+			connection.send(JSON.stringify({
+				"cmd": "get_pixel_set"
+			}));
+		}
+
+		function handler(msg) {
+
+			switch (msg.cmd) {
+				case 'get_pixel_set':
+					autoFill(msg);
+					clearUi();
+					nummerLeds = msg.number;
+					document.getElementById("brightness").max = msg.max_brightness;
+					document.getElementById("max_brightness_label").value = msg.max_brightness; document.getElementById("brightness").value = msg.brightness; createUi(nummerLeds);
+						for (var i = 0; i < nummerLeds; i++) {
+							j = parseInt(i) + parseInt(1);
+							document.getElementById("rgb_" + j).value = msg.rgb_array[i];
+						}
+
+						break;
+					}
+					//autoFill(msg); //included in auto.js
+			}
+
+
+
+			function sendForm(form) {
+				msg = autoJson(form);
+				console.log(msg);
+				connection.send(autoJson(form));
+			}
+	</script>
+
+</body>
+
+</HTML>

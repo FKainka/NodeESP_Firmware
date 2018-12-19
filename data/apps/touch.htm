@@ -1,0 +1,110 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NanoESP32</title>
+
+	<link rel="stylesheet" href="../style.css">
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Touch Buttons</h1>
+	</header>
+
+	<article>
+		<form id="Touch" align="center">
+			<input id="T3" type="checkbox"> T3 Button<br><br>
+			<input id="T4" type="checkbox"> T4 Button<br><br>
+			<input id="T5" type="checkbox"> T5 Button<br><br>
+			<input id="T6" type="checkbox"> T6 Button<br><br>
+		</form>
+
+	</article>
+
+	<footer class="headfood">
+		<br><br>
+		<div class="fooder_text">
+	</footer>
+
+	<script language="JavaScript">
+		try { //if Script is on Board
+			var connection = new WebSocket('ws://' + location.hostname + ':80/ws', ['arduino']);
+		} catch (err) { //Local excution
+			var connection = new WebSocket('ws:/esp32.local:80/ws', ['arduino']);
+		}
+			var connection = new WebSocket('ws://192.168.178.114:80/ws', ['arduino']);
+
+		connection.onopen = function() {
+			console.log('WebSocket Connected ');
+		}
+
+		connection.onerror = function(error) {
+			console.log('WebSocket Error ', error);
+		};
+
+		connection.onmessage = function(e) {
+			console.log('Server: ', e.data);
+
+			var myObj = JSON.parse(e.data);
+					for (x in myObj) {
+						if (x !== 'cmd'){
+							try{
+								document.getElementById(x).checked = (myObj[x]=='true');
+							}
+							catch (err){
+								console.log(err);
+							}
+						}
+
+					}
+
+
+		}
+
+		connection.ondiconnect = function(e) {
+			console.log('Closed');
+		}
+
+
+
+		/**
+		 * Converts a Form to a JSON String, Form name is command
+		 * @param   form to convert and send
+		 */
+		function formToJson(form) {
+			var myObj = {}; //first create a JavaScript Object (JSON)
+			myObj["cmd"] = form.name; //Add cmd as fist value, cmd defined by form name
+
+			for (var i = 0; i < form.elements.length; i++) { //get all form elements and add them to object
+				var d = form.elements[i]; // current form element
+				myObj[d.name] = d.value; //add to JSON, element.name : element.value
+			}
+			return myObj;
+		}
+
+		/**
+		 * Send Json String via HTTP Method
+		 * @param   form.name defines command,form.action defines url, form.method defines method
+		 */
+		function sendJsonHttp(form) {
+			var myJSON = JSON.stringify(formToJson(form)); //convert to string
+			console.log(myJSON); //log for debug
+
+			var xhr = new XMLHttpRequest(); //make new request in background
+			if (form.method == 'get') {
+				//encodeURIComponent for formating # as sign
+				xhr.open(form.method, form.action + "?json_put=" + encodeURIComponent(myJSON), true);
+				xhr.send();
+			} else {
+				xhr.open(form.method, form.action, true);
+				xhr.send(myJSON);
+			}
+		}
+	</script>
+
+</body>
+
+</HTML>

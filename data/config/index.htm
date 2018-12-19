@@ -1,0 +1,198 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: ses better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NodeESP</title>
+
+	<link rel="stylesheet" href="../style.css">
+	<script src="../scripts/auto.js"></script>
+	<script src="../scripts/ws.js"></script>
+	<script src="../scripts/config.js"></script>
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Config Page</h1>
+	</header>
+
+	<article>
+		<details open>
+			<summary>WiFi Status</summary>
+			<hr>
+			<form id="get_wifi_status">
+				<input value="Station SSID" class="label" disabled size=10> <input id="stat_station" class="in" size=25 data-auto><br>
+				<input value="Board IP" class="label" disabled size=10> <input id="stat_ip" class="in" size=25 data-auto><br>
+				<input value="Connected" class="label" disabled size=10> <input id="stat_connected" class="in" size=2 disabled style="background-color: #FF0000; ;"><br>
+			</form>
+		</details>
+
+		<details>
+			<summary onclick="autoRequest('get_app_set')">Application Settings</summary>
+			<hr>
+			<form id="get_app_set">
+				<B>Currently Running</B> <br>
+				<div data-auto id="app_running">
+				</div><br>
+				<B>Available Apps</B> <br>
+
+				<select class="slct" id="app_set_select" data-auto onchange="changeAppSet();">
+						 <option value="init_dflt" >Select Set of Applications</option>
+				</select>
+				<select class="slct" id="app_select" data-auto>
+					<option value="init_dflt" >init_dflt: The default App with WPS Button and Configuration Website</option>
+				</select>
+				<br><br>
+				<input type="button" class="btn" value="Submit" onclick="sendForm(this.form);">
+			</form>
+		</details>
+
+		<details id="wifi_station_details">
+			<summary onclick="reqScan()">WiFi Station Settings</summary>
+			<hr>
+			<form id="set_wifi">
+				<select class="slct" size=10 onclick="setWifiSSID(this)" id="wifi_ssid_select"></select><br>
+
+				<input value="SSID" class="label" disabled size=6>
+				<input type="input" class="in" size=30 data-auto id="wifi_ssid"><br>
+				<input value="Password" class="label" disabled size=6>
+				<input type="password" class="in" size=30 data-auto id="wifi_pwd"><br>
+
+				<input type="button" class="btn" autocomplete="" value="Submit" onclick="sendForm(this.form);">
+				<hr>
+				<input type="button" class="btn" autocomplete="" value="Use WPS" onclick="autoRequest('wifi_wps');">
+			</form>
+			</div>
+		</details>
+
+		<details>
+			<summary onclick="autoRequest('get_gen_set')">General Settings</summary>
+			<hr>
+			<form id="get_gen_set">
+				<B>Board Access Point Settings</B><br>
+				<input value="SSID" class="label" disabled size=6>
+				<input type="input" class="in" size=30 data-auto id="ap_ssid"><br>
+				<input value="Password" class="label" disabled size=6>
+				<input type="input" class="in" size=30 data-auto id="ap_pwd">
+				<br>
+				<hr>
+
+				<B>WiFi Mode</B> <br>
+				<!--only first radio button has id for seeking others -->
+				<label for="ap">Access Point Mode</label><input type="radio" name="wifi_mode" value=2 data-auto id="wifi_mode"> <br>
+				<label for="ap">Station Mode</label><input type="radio" name="wifi_mode" value=1> <br>
+				<label for="ap">Both (Dual Mode)</label><input type="radio" name="wifi_mode" value=3 checked> <br>
+				<hr>
+
+				<b>Status LED</b><br>
+				<input type="checkbox" class="in" size=25 data-auto id="status_led">Enable
+				<br>
+				<hr>
+
+				<b>Hostname Settings</b><br>
+				<input value="Host Name" class="label" disabled size=10>
+				<input type="input" class="in" size=25 data-auto id="host_name">
+				<br>
+				<b>mDNS Name Settings</b><br>
+				<input value="mDNS Name" class="label" disabled size=10>
+				<input type="input" class="in" size=25 data-auto id="mdns_name">
+				<br>
+				<hr>
+
+				<b>Time waiting for Wifi connection</b><br>
+				<input type="range" class="range" min=5 max=60 value=10 size=25 data-auto id="wifi_con_time" onchange="setWifiTime(this)">
+				<input value="30 Seconds" class="label round" disabled size=7 id="wifi_con_time_label">
+				<br>
+				<hr>
+
+				<b>Touch Threshold</b><br>
+				<input type="range" class="range" min=5 max=70 value=30 size=25 data-auto id="touch_threshold" onchange="setTouchThreshold(this)">
+				<input value="30" class="label round" disabled size=7 id="touch_threshold_label">
+				<br>
+				<hr>
+
+				<input type="button" class="btn" value="Submit" onclick="sendForm(this.form);">
+			</form>
+		</details>
+
+		<details>
+			<summary onclick="autoRequest('get_udp_set')">UDP Settings</summary>
+			<hr>
+			<form id="get_udp_set">
+				<input value="IP (send)" class="label" disabled size=10>
+				<input type="input" class="in" size=25 data-auto id="udp_ip"><br>
+				<input value="Port (send)" class="label" disabled size=10>
+				<input type="input" class="in" size=25 data-auto id="udp_port_send"><br>
+				<input value="Port (receive)" class="label" disabled size=10>
+				<input type="input" class="in" size=25 data-auto id="udp_port_recv"><br>
+				<input type="checkbox" data-auto id="ack">Acknowledge Messages<br><br>
+
+				<input type="button" class="btn" value="Submit" onclick="sendForm(this.form);">
+			</form>
+		</details>
+
+		<details>
+			<summary onclick="autoRequest('get_mqtt_set')">MQTT Settings</summary>
+			<hr>
+			<form align="middle" id="get_mqtt_set">
+				<input value="Server" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="server_address"> <br>
+				<input value="Port" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="port"> <br>
+
+				<input value="Username" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="user_name"> <br>
+				<input value="Password" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="user_pw"> <br>
+				<hr>
+
+				<input value="Client ID" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="client_id"> <br>
+				<hr>
+
+				<input value="Connect MSG" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="con_msg"><br>
+				<input value="Connect Topic" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="con_topic"><br>
+				<input type="checkbox" name="wifimode" data-auto id="con_msg_retain"> Retain Message
+				<br>
+				<hr>
+
+				<input value="Last Will MSG" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="last_will_msg"><br>
+				<input value="Last Will Topic" class="label" disabled size=10>
+				<input class="in" size=25 data-auto id="last_will_topic"><br>
+				<input type="checkbox" data-auto id="last_will_retain"> Retain Message
+				<br>
+				<hr>
+				<input type="button" class="btn" value="Submit" onclick="sendForm(this.form);">
+				<hr>
+				<input type="button" class="btn" onclick="autoRequest('get_mqtt_check');" value="Test Connection">
+				<input value="Connected" class="label" disabled size=10>
+				<input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+			</form>
+		</details>
+
+		<details>
+			<summary>Advanced Settings</summary>
+			<div align="middle">
+				<hr>
+				<input type="button" class="btn" autocomplete="" value="Restore Default Configuration" onclick="autoRequest('con_restore');">
+				<hr>
+				<input type="button" class="btn" autocomplete="" value="Check for Firmware Updates" onclick="autoRequest('con_firmware_update');">
+			</div>
+		</details>
+
+
+		<p id="scrt">
+
+	</article>
+
+	<footer class="headfood">
+		<H2><a href= "/" style="color:white;">HOME</a></H2>
+		<div class="fooder_text">
+	</footer>
+</body>
+
+</HTML>

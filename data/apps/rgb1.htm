@@ -1,0 +1,56 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NanoESP32</title>
+	<link rel="stylesheet" href="../style.css">
+	<script src="../scripts/ws.js"></script>
+	<script src="../scripts/auto.js"></script>
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Color Picker</h1>
+	</header>
+
+	<article>
+		
+		<details open>
+		<summary>RGB Leds</summary>
+			<form id="get_rgb_hex" align=middle>
+				<H1>Change the Color</h1><br>
+				<input type="color" name="rgb" data-auto id="value" onchange="sendForm(this.form)">
+			</form>
+		</details>
+	</article>
+
+	<footer class="headfood">
+		<br><br>
+		<div class="fooder_text">
+	</footer>
+
+	<script language="JavaScript">
+	var connection = connect();
+
+	function onConnect() {
+	  connection.send(JSON.stringify({
+	    "cmd": "get_rgb_hex"
+	  }));
+	}
+
+	function handler(msg) {
+	  autoFill(msg); //included in auto.js
+	}
+
+	function sendForm(form) {
+	  msg = autoJson(form);
+	  console.log(msg);
+	  connection.send(autoJson(form));
+	}
+	</script>
+
+</body>
+
+</HTML>

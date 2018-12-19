@@ -1,0 +1,215 @@
+/*-----Colors----------*/
+
+:root {
+  --headfood: #0074D9;
+  --backarticle: #fefbd8;
+  --backall: #AAAAAA;
+  --buttons: #001f3f;
+}
+
+:root {
+  --headfood: #0042ac;
+  --backarticle: #ffffcc;
+  --backall: #555555;
+  --buttons: #0042ac;
+}
+
+:root {
+  --headfood: #0074D9;
+  --backarticle: #fefbd8;
+  --backall: #AAAAAA;
+  --buttons: #0074D9;
+  --buttons2: #001f3f
+}
+
+/*-
+/*--------Main Elements---------------*/
+
+.headfood {
+  background-color: var(--headfood);
+  color: white;
+  text-align: center;
+  min-height: 40px;
+}
+
+header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+footer {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+article {
+  background-color: var(--backarticle);
+  padding: 15px;
+  align-self: center;
+  min-height: 500px;
+  position: relative;
+}
+
+body {
+  background-color: var(--backall);
+  max-width: 600px;
+  margin: 5px auto;
+}
+
+/*.--------Headlines---------*/
+
+h1 {
+  margin: 0px;
+  margin-left: 5px;
+}
+
+h2 {
+  margin: 0px;
+  margin-left: 5px;
+}
+
+/*Nothing Special*/
+
+.scrtp::after {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  /*content: url("pics/wr.png");*/
+  content: url("http://iot.fkainka.de/wp-content/uploads/2018/02/wr.png");
+  opacity: 0.0;
+}
+
+.scrtp:hover::after {
+  opacity: 0.1;
+}
+
+p#scrt:hover::before {
+  opacity: 0.1;
+}
+
+p#scrt::before {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  content: "FOLLOW THE WHITE RABIT";
+  opacity: 0.0;
+}
+
+* {
+   margin: 0;
+   padding: 0;
+  }
+  .imgbox {
+   display: grid;
+   height: 100%;
+  }
+  .center-fit {
+   max-width: 100%;
+   max-height: 100vh;
+   margin: auto;
+  }
+
+/*---------Form Elements-------------*/
+
+/*----details---*/
+
+details {
+  border-radius: 5px;
+  box-shadow: 0px 1px 2px;
+  padding: 1%;
+  margin-bottom: 10px;
+}
+
+details[open] {
+  background: #E1E1E1;
+}
+
+summary {
+  background: -webkit-linear-gradient(#FAFAFA, #E1E1E1);
+  border-radius: 5px;
+  margin: -1%;
+  padding: 10px;
+  font-weight: bold;
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+/*---other form elements---*/
+
+form {
+  margin: 0 auto;
+  max-width: 500px;
+  text-align: center;
+}
+
+.slct {
+  width: 100%;
+  border-radius: 5px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  background: var(--headfood);
+  border: none;
+  border-radius: 5px;
+  margin: -6px;
+}
+
+.in {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin: 5px;
+}
+
+.label {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin: 5px;
+  margin-right: -5px;
+}
+
+.label.round {
+  border-radius: 5px;
+  margin: 0px;
+}
+
+a.button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  text-decoration: none;
+  color: initial;
+  background: var(--buttons);
+  border-radius: 5px;
+  color: #FFFFFF;
+  padding: 10px;
+  min-width: 200px;
+  margin: 5px;
+  display: inline-block;
+
+}
+
+.btn {
+  background: var(--buttons);
+  border-radius: 5px;
+  color: #FFFFFF;
+  padding: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.led {
+  margin: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: #F00;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+}
+
+.fooder_text::after {
+  font-size: 70%;
+  bottom: 0;
+  content: "© 2018 Fabian Kainka"
+}

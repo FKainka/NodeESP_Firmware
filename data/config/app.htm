@@ -1,0 +1,166 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: ses better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NodeESP</title>
+
+	<link rel="stylesheet" href="../style.css">
+	<script src="../scripts/config.js" async></script>
+	<!--
+-->
+	<!--
+	<link rel="stylesheet" href="../style.css">
+	<script src="\config.js" async></script>
+-->
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Application Settings
+	</header>
+
+	<article>
+
+		<details>
+			<summary>Button Settings</summary><hr>
+					<form align="middle">
+						<details>
+							<summary>IO Settings</summary><hr>
+							<B>Button 1 (IO13)</B><br>
+							<input type="checkbox">Enable
+								<input type="radio" name="btn1" value="male" checked>Button
+						  	<input type="radio" name="btn1" value="female">Touch
+							<br><br>
+
+							<B>Button 2 (IO12)</B><br>
+							<input type="checkbox">Enable
+								<input type="radio" name="btn2" value="male" checked>Button
+								<input type="radio" name="btn2" value="female">Touch
+							<br><br>
+
+							<B>Button 3 (IO14)</B><br>
+							<input type="checkbox">Enable
+								<input type="radio" name="btn3" value="male" checked>Button
+								<input type="radio" name="btn3" value="female">Touch
+							<br><br>
+
+							<B>Button 4 (IO127)</B><br>
+							<input type="checkbox">Enable
+								<input type="radio" name="btn4" value="male" checked>Button
+								<input type="radio" name="btn4" value="female">Touch
+							<br><br>
+							<hr>
+							<B>Touch Threshold</B><br>
+							<input type="range" min="0" max="100">
+							<hr>
+						</details>
+
+						<details>
+								<summary>Connection Settings</summary><hr>
+								<div align="left" style='margin-left:40'>
+									<input type="checkbox">Enable UDP <br>
+									<input type="checkbox">Enable TCP<br>
+									<input type="checkbox">Enable	HTTP<br>
+									<input type="checkbox">Enable	Websockets<br>
+									<input type="checkbox">Enable	Website<br>
+									<input type="checkbox">Enable	MQTT<br><br>
+								</div>
+						</details>
+
+						<details>
+								<summary>DeepSleep Settings</summary><hr>
+								<div align="left" style='margin-left:40'>
+									<input type="checkbox">Enable DeepSleep <br>
+									Attention! Board will go in deep sleep, doenst work with...
+								</div>
+						</details>
+						<input type="button" class="btn"  value="Submit">
+					</form>
+		</details>
+
+		<details>
+			<summary>ADC Settings</summary><hr>
+					<form align="middle">
+						<details>
+							<summary>IO Settings</summary><hr>
+							<B>ADC 1 (IO36)</B>
+							<input type="checkbox">Enable
+							<br><br>
+
+							<B>ADC 2 (IO39)</B>
+							<input type="checkbox">Enable
+							<br><br>
+
+							<B>ADC 3 (IO49)</B>
+							<input type="checkbox">Enable
+							<br><br>
+
+							<B>ADC 4 (IO35)</B>
+							<input type="checkbox">Enable
+							<br><br>
+							<hr>
+							<B>RF (Humidity) (IOX)</B>
+							<input type="checkbox">Enable
+							<br><br>
+							<hr>
+							<hr>
+						</details>
+
+						<details>
+								<summary>Connection Settings</summary><hr>
+								<div align="left" style='margin-left:40'>
+									<input type="checkbox">Enable UDP <br>
+									<input type="checkbox">Enable TCP<br>
+									<input type="checkbox">Enable	HTTP<br>
+									<input type="checkbox">Enable	Websockets<br>
+									<input type="checkbox">Enable	Website<br>
+									<input type="checkbox">Enable	MQTT<br><br>
+								</div>
+						</details>
+						<input type="button" class="btn"  value="Submit">
+					</form>
+		</details>
+
+		<details>
+			<summary>RGB Settings</summary><hr>
+
+					<form align="middle">
+						<input value="TCP IP" class="label" disabled size=10>
+						<input type="input" id="pass" class="in" size=25><br>
+						<input value="TCP Port" class="label" disabled size=10>
+						<input type="input" id="pass" class="in" size=25>
+						<input type="button" class="btn"  value="Submit">
+					</form>
+		</details>
+
+		<details>
+			<summary>Special Settings</summary><hr>
+
+					<form align="middle">
+						<input value="TCP IP" class="label" disabled size=10>
+						<input type="input" id="pass" class="in" size=25><br>
+						<input value="TCP Port" class="label" disabled size=10>
+						<input type="input" id="pass" class="in" size=25>
+						<input type="button" class="btn"  value="Submit">
+					</form>
+		</details>
+
+			<br><br><br>
+			<div align="middle">
+				<a href="config\index.htm" class="button btn" align="middle">General Settings</a><br>
+			</div>
+
+			<a class="scrtp" href="http://www.google.de"></a>
+			<p id="scrt">
+
+	</article>
+
+	<footer class="headfood">
+	<H2><a href= "../index.htm" style="color:white;">HOME</a></H2>
+		<div class="fooder_text">
+	</footer>
+</body>
+
+</HTML>

@@ -1,0 +1,81 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<title>NanoESP32</title>
+
+	<link rel="stylesheet" href="../style.css">
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Color Picker</h1>
+	</header>
+
+	<article>
+		
+		<details open>
+		<summary>RGB Led (GET-Methode)</summary>
+			<form name="set_rgb" method="get" action="/set" align=middle>
+				<H1>Change the Color</h1><br>
+				<input type="color" name="rgb" onchange="sendJsonHttp(this.form)">
+			</form>
+		</details>
+		
+		<details open>
+		<summary>RGB Led (POST-Methode)</summary>		
+			<form name="set_rgb" method="post" action="/set" align=middle>
+				<H1>Change the Color</h1><br>
+				<input type="color" name="rgb" onchange="sendJsonHttp(this.form)">
+			</form>
+		</details>
+		
+	</article>
+
+	<footer class="headfood">
+		<br><br>
+		<div class="fooder_text">
+	</footer>
+
+	<script language="JavaScript">
+		/**
+		 * Converts a Form to a JSON String, Form name is command
+		 * @param   form to convert and send
+		 */
+		function formToJson(form) {
+			var myObj = {}; //first create a JavaScript Object (JSON)
+			myObj["cmd"] = form.name; //Add cmd as fist value, cmd defined by form name
+
+			for (var i = 0; i < form.elements.length; i++) { //get all form elements and add them to object
+				var d = form.elements[i]; // current form element
+				myObj[d.name] = d.value; //add to JSON, element.name : element.value
+			}
+			return myObj;
+		}
+
+		/**
+		 * Send Json String via HTTP Method
+		 * @param   form.name defines command,form.action defines url, form.method defines method
+		 */
+		function sendJsonHttp(form) {
+			var myJSON = JSON.stringify(formToJson(form)); //convert to string
+			console.log(myJSON); //log for debug
+
+			var xhr = new XMLHttpRequest(); //make new request in background
+			if (form.method == 'get') {
+				//encodeURIComponent for formating # as sign
+				xhr.open(form.method, form.action + "?json_put=" + encodeURIComponent(myJSON), true);
+				xhr.send();
+			} else {
+				xhr.open(form.method, form.action, true);
+				xhr.send(myJSON);
+			}
+		}
+	</script>
+
+</body>
+
+</HTML>

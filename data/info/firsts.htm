@@ -1,0 +1,55 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NanoESP32</title>
+	<link rel="stylesheet" href="../style.css">
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Erste Schritte mit dem NodeESP</h1>
+	</header>
+
+	<article>
+
+		
+		In dieser kurzen Anleitung werde ich Ihnen die ersten Schritte im Umgang mit Ihrem neuen Board erläutern. Zunächst müssen Sie das Board mit Strom versorgen. Dazu eignet sich ein handelsübliches Ladegerät mit Micro-USB-Anschluss. Sie können auch eine USB-Schnittstelle
+		eines PCs verwenden, achten Sie allerdings darauf, dass der Port mindestens 300 mA liefern kann. Ältere Laptops oder USB-Hubs ohne eigene Stromversorgung können problematisch sein.
+		<br><br>
+		<h2>Verbinden mit dem Heimnetzwerk</h2>
+		Nach dem Anlegen einer Stromversorgung wird das Board nach kurzer Zeit gelb aufleuchten. Damit signalisiert das Board, dass es einsatzbereit ist aber noch keine WLAN-Verbindungen zu einem Router besteht. Es gibt nun zwei Möglichkeiten, dass Board mit
+		Ihrem Heimnetz zu verbinden:<br><br>
+		<h3>Möglichkeit 1: WPS</h3>
+		Drücken und halten Sie den Boot-Button (die Taste am Batterieanschluss) für ein paar Sekunden. Die Board-LED beginnt nun gelb zu blinken. Drücken Sie nun die WPS Taste auf Ihrem Router. Beide Teilnehmer versuchen nun eine Verbindung herzustellen. Nach
+		einer kurzen Wartezeit startet das Board neu. Wenn der Verbindungsaufbau erfolgreich war, leuchtet die LED nach kurzem Blinken dauerhaft grün. Ist dies nicht der Fall können Sie den Vorgang wiederholen oder die zweite Möglichkeit ausprobieren.
+		<br><br>
+		<h3>Möglichkeit 2: Konfiguration Webseite</h3>
+		Der zweite Weg für einen Verbindungsaufbau führt über die integrierte Konfigurations-Webseite. Benutzen Sie zunächst ein WLAN-fähiges Gerät um sich mit dem offenen WLAN NodeESP zu verbinden. Anschließend öffnen Sie einen Browser und rufen die http://192.168.4.1
+		auf. Dies ist die Adresse des Boards im Access Point Modus. Sie befinden sich nun auf der Hauptseite des Boards, auf der Sie auch ein eine Reihe von Dokumentationen und Links finden. Außerdem finden Sie hier den Link zu der Konfigurationsseite: Board
+		Configuration. Rufen Sie die Seite auf und klicken Sie dann auf den Punkt WIFI Station Settings. Das Board scannt nach WLAN-Netzwerken in Reichweite. Nach kurzer Wartezeit können Sie Ihr Netzwerk nun in der Liste auswählen und in das untere Textfeld
+		das Passwort eingeben. Sollte Ihr Netzwerk nicht zu sehen sein, z.B. weil es gerade nicht in Reichweite oder versteckt ist, können Sie die Zugangsdaten auch manuell in die entsprechenden Felder eintragen. Durch klicken auf Submit startet das Board neun
+		und versucht im Anschluss eine Verbindung zu dem konfigurierten Netzwerk aufzubauen. War dies erfolgreich leuchtet die LED nach kurzem Blinken grün.
+
+		<h2>Adressierung des Boards im Heimnetzwerk</h2> Wenn die Verbindung zum Heimnetzwerk steht, können Sie das Board nun von jedem Gerät im Heimnetzwerk aus adressieren. Dazu müssen Sie zunächst die IP-Adresse herausfinden, die sich von der IP-Adresse im Access-Point-Modus unterscheidet. Sie können
+		die Adresse des Boards herausfinden, indem Sie sich erneut mit dem Access Point des Boards verbinden, und die Konfigurationsseite aufrufen. Im Bereich Board WiFi Status finden Sie die IP-Adresse, die Ihr Board von Ihrem Router zugewiesen bekommen hat.
+		Verbinden Sie sich nun wieder mit Ihren Heimnetzwerk und rufen Sie diese IP im Browser auf. Die selbe Boardwebseite erscheint nun unter der Heimnetzwerkadresse. Ein zweiter, etwas praktischerer Weg führt aber über den Bonjour-Service von Apple. Unter
+		Windows müssen Sie das kleine Tool noch separat installieren. Sie finden die Installationsdatei unter https://support.apple.com/de-de/bonjour Mac und Linux-Nutzer haben den Service höchstwahrscheinlich bereits vorinstalliert. Der Bonjour-Service ermöglicht
+		Ihnen nun, im Browser einfach http://nodeesp.local/ einzutippen, um das Board zu adressieren. Die Adresse des Boards können Sie auf der Konfigurationsseite unter General Settings -> mDNS Name Settings anpassen. Einstellen von Apps Auf dem Board gibt
+		es bereits eine Reihe von programmierten Apps, die Sie testen können. Dazu gehen Sie einfach auf die Config-Seite und wählen unter Application Settings zunächst ein Set von Beispielen und schließlich ein konkretes Beispiel aus. Wenn Sie beispielsweise
+		das Set Example Apps und dort das Programm [OnBoard RGB-LED Example]… wählen, startet das Board mit einem Programm neu, dass Ihnen erlaubt, die Farbe der OnBoard-RGB-LED manuell zu steuern. Manche Apps, wie auch die OnBoard-LED-App, verfügen über eine
+		Webseite, die Sie auf der Hauptseite unter dem Punkt Application Page finden. Dieser Link erscheint nur bei Programmen, die über eine Applikation-Seite verfügen. Auf der Webseite zur OnBoard LED finden Sie eine Color-Picker-Element, über das Sie die
+		Farbe der LED steuern können. Die Meisten Programme verfügen außerdem über einen internen oder externen Link im Beschreibungstext unter dem Punkt Currently Running, über den Sie zu weiteren Informationen wie Aufbaubild und Steuerkommandos, gelangen.
+
+
+	</article>
+
+	<footer class="headfood">
+		<H2><a href= "/" style="color:white;">HOME</a></H2>
+		<div class="fooder_text">
+	</footer>
+</body>
+
+</HTML>

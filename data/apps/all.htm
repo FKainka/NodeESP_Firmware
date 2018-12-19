@@ -1,0 +1,207 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+	<!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<title>NanoESP32</title>
+	<link rel="stylesheet" href="../style.css">
+	<script src="../scripts/ws.js"></script>
+	<script src="../scripts/auto.js"></script>
+	<script src="../scripts/gauge.min.js"></script>
+</HEAD>
+
+<body>
+	<header class="headfood">
+		<h1>Color Picker</h1>
+	</header>
+
+	<article>
+
+		<details open>
+			<summary onclick="autoRequest('get_udp_set')">Buttons and Touch Buttons</summary>
+			<hr>
+			<form align="middle" id="get_udp_set">
+				<input value="Button 1" class="label" disabled size=5> <input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+				<input value="Button 2" class="label" disabled size=5> <input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+				<br>
+				<input value="Button 3" class="label" disabled size=5> <input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+				<input value="Touch 1" class="label" disabled size=5> <input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+				<br>
+				<input value="Touch 2" class="label" disabled size=5> <input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+				<input value="Touch 3" class="label" disabled size=5> <input class="in" size=2 disabled style="background-color: #FF0000;" id="get_mqtt_check">
+				<br>
+			</form>
+		</details>
+
+		<details open>
+			<summary onclick="autoRequest('get_udp_set')">ADCs</summary>
+			<hr>
+			<form align="middle" id="get_udp_set">
+
+				<canvas id="gaugeTemp"></canvas>
+				<canvas id="gaugeLight"></canvas>
+				<canvas id="gaugeHum"></canvas>
+
+			</form>
+		</details>
+
+		<details open>
+			<summary onclick="autoRequest('get_udp_set')">LEDs</summary>
+			<hr>
+			<form align="middle" id="get_udp_set">
+
+				<input type="checkbox" class="in" size=25 data-auto id="status_led">LED 1
+				<input type="checkbox" class="in" size=25 data-auto id="status_led">LED 2
+
+			</form>
+		</details>
+
+
+
+				<details open>
+					<summary onclick="autoRequest('get_udp_set')">RGB Leds</summary>
+					<hr>
+					<form id="get_rgb_hex" align=middle>
+						<input value="Onboard LED" class="label" disabled size=10> <input type="color" name="rgb" data-auto id="value" onchange="sendForm(this.form)"> <br>
+						<input value="LED 1" class="label" disabled size=10> <input type="color" name="rgb" data-auto id="value" onchange="sendForm(this.form)">
+						<input value="LED 2" class="label" disabled size=10> <input type="color" name="rgb" data-auto id="value" onchange="sendForm(this.form)">
+					</form>
+				</details>
+
+
+	</article>
+
+	<footer class="headfood">
+		<br><br>
+		<div class="fooder_text">
+	</footer>
+
+	<script language="JavaScript">
+		var connection = connect();
+
+		function onConnect() {
+			connection.send(JSON.stringify({
+				"cmd": "get_rgb_hex"
+			}));
+		}
+
+		function handler(msg) {
+			autoFill(msg); //included in auto.js
+		}
+
+		function sendForm(form) {
+			msg = autoJson(form);
+			console.log(msg);
+			connection.send(autoJson(form));
+		}
+
+		var gauge = new RadialGauge({
+			renderTo: ("gaugeTemp"),
+			highlights: [{
+					from: -20,
+					to: 0,
+					color: 'rgba(0,0,255,.5)'
+				},
+				{
+					from: 0,
+					to: 20,
+					color: 'rgba(0,255,0,.5)'
+				},
+				{
+					from: 20,
+					to: 40,
+					color: 'rgba(255,0,0,.5)'
+				},
+			],
+			width: 150,
+			height: 150,
+			borderRadius: 2,
+			borders: 0,
+			barStrokeWidth: 2,
+			minorTicks: 5,
+			minValue: -20,
+			maxValue: 40,
+			majorTicks: [-20, -10, 0, 10, 20, 30, 40],
+			value: 20,
+			units: "°C",
+			colorValueBoxShadow: false
+		})
+		gauge.value = 0;
+		gauge.draw();
+
+		var gaugeL = new RadialGauge({
+			renderTo: ("gaugeLight"),
+			highlights: [{
+					from: -20,
+					to: 0,
+					color: 'rgba(0,0,255,.5)'
+				},
+				{
+					from: 0,
+					to: 20,
+					color: 'rgba(0,255,0,.5)'
+				},
+				{
+					from: 20,
+					to: 40,
+					color: 'rgba(255,0,0,.5)'
+				},
+			],
+			width: 150,
+			height: 150,
+			borderRadius: 2,
+			borders: 0,
+			barStrokeWidth: 2,
+			minorTicks: 5,
+			minValue: -20,
+			maxValue: 40,
+			majorTicks: [-20, -10, 0, 10, 20, 30, 40],
+			value: 20,
+			units: "°C",
+			colorValueBoxShadow: false
+		})
+		gaugeL.value = 0;
+		gaugeL.draw();
+
+		var gaugeL = new RadialGauge({
+			renderTo: ("gaugeHum"),
+			highlights: [{
+					from: -20,
+					to: 0,
+					color: 'rgba(0,0,255,.5)'
+				},
+				{
+					from: 0,
+					to: 20,
+					color: 'rgba(0,255,0,.5)'
+				},
+				{
+					from: 20,
+					to: 40,
+					color: 'rgba(255,0,0,.5)'
+				},
+			],
+			width: 150,
+			height: 150,
+			borderRadius: 2,
+			borders: 0,
+			barStrokeWidth: 2,
+			minorTicks: 5,
+			minValue: -20,
+			maxValue: 40,
+			majorTicks: [-20, -10, 0, 10, 20, 30, 40],
+			value: 20,
+			units: "°C",
+			colorValueBoxShadow: false
+		})
+		gaugeL.value = 0;
+		gaugeL.draw();
+
+		gaugeHum
+
+	</script>
+
+</body>
+
+</HTML>
