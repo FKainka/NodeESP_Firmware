@@ -5,7 +5,7 @@
  *
  */
 
-//Current Version of APP, Spiff version is saved in config
+//Current Version of APP, Spiff version is also saved in config file
 #define VERSION "v1.4_16122018"
 #define SPIFFS_VERSION "v1.2_16122018"
 
@@ -19,10 +19,10 @@
 void setup() {
         Serial.begin(115200);
         Serial.setDebugOutput(true);
-        Serial.println("\n\nRUN");
+        Serial.println("\n\nRUN\n");
 
         #ifdef AUTHORMODE
-          Serial.println("Author Mode!"); 
+          Serial.println("Author Mode!");
         #endif
 
         //initialise the RGB LED to show status
