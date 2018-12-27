@@ -1,24 +1,32 @@
+/**
+ * AppStrucs.hpp
+ *
+ * Here all APPS are predefined and added to a list including Informations
+ */
 #include "CmdHandler.hpp"
 #include <ArduinoJson.h> //https://arduinojson.org/assistant/?utm_source=github&utm_medium=issues
 
 /*Example APPS*/
 void btn_exmpl(),touch_exmpl(), led_exmpl(),pwm_exmpl(),adc_exmpl();
 
-/*OLD Example List*/
+/*Default Apps*/
 bool list_apps(JsonObject& msg, JsonObject& answ, bool& hasAnsw);
 void dflt_init(), firmware_update();
-void udp_test_init(),speaker_test(), neoPixel_test(), ir_recv_test(), adc_test(), btn_n_touch_test(), btn_n_led_test(), rf_test(), ir_test(), mqtt_test(), all_test();
-void tvLight();
 
 /*IoT Calendar 2018*/
-void iot18_day2(), iot18_day3(),iot18_day4(), iot18_day5(),iot18_day6(), iot18_day7(),iot18_day8(), iot18_day9(), iot18_day10();
+void iot18_day2(), iot18_day3(), iot18_day4(), iot18_day5(),iot18_day6(), iot18_day7(),iot18_day8(), iot18_day9(), iot18_day10();
 void iot18_day11(), iot18_day12(), iot18_day13(),iot18_day14(), iot18_day15(),iot18_day16(), iot18_day17(), iot18_day18(), iot18_day19(), iot18_day20();
 void iot18_day21(), iot18_day22(),iot18_day23(),iot18_day24();
 
+/* APPS for testing - not included most times*/
+void udp_test_init(),speaker_test(), neoPixel_test(), ir_recv_test(), adc_test(), btn_n_touch_test(), btn_n_led_test(), rf_test(), ir_test(), mqtt_test(), all_test();
+void tvLight();
+
+// TASK
 void d5_task(void * parameter);
 
-
 /**
+ *  Parameter for a Task
  *  * paramter:  (AppStructs.hpp)
   *       cmd_handler_s* functions; //Function to be executed
   *       connection_s* con;   {true, true, false} //Websockets; UDP, MQTT (Config.hpp)       //connections used for Communication
@@ -30,23 +38,34 @@ typedef struct {
         uint16_t delay;
 } task_parameter_s;
 
+/*
+ Typedef of an app
+ */
 typedef struct {
-        String app;
-        void (*func)();
-        String info;
+        String app;     //APP Name/Identifier
+        void (*func)(); //Pointer to actual app
+        String info;    //Aditional Informations to show on Webpage
 } apps_s;
 
+/*
+ Typedef if an Command
+ */
 typedef struct {
         String cmd;
         bool (*func)(JsonObject& msg, JsonObject&  answer);
 } app_cmd_handler_s;
 
+/*
+Typedef of an list of list of apps
+ */
 typedef struct {
         apps_s* apps_pnt;
         String info;
 }app_lists_s;
 
-
+/**
+ * APPS if the Adventcalendar IoT 2018
+ */
 apps_s apps_iot18[]= {
         {"iot18_day2",iot18_day2,"[IoT Calendar 2018 - Day2] See <a href='http://iot.fkainka.de/day2-2018'>iot.fkainka.de/day2-2018</a> OnBoard LED (WS, AP) "},
         {"iot18_day3",iot18_day3,"[IoT Calendar 2018 - Day3] See <a href='http://iot.fkainka.de/day3-2018'>iot.fkainka.de/day3-2018</a> (UDP, WS, WPS)"},
@@ -76,6 +95,9 @@ apps_s apps_iot18[]= {
         {"",dflt_init,""} //marks end of handlers
 };
 
+/**
+* Exampe APPS
+ */
 apps_s apps_examples[]= {
         {"dflt_init",dflt_init,"[init_dflt] The default Applikation (Webserver, WPS)"},
         {"btn_exmpl",btn_exmpl,"[Button Example] Two Buttons (Webserver, WPS, UDP, MQTT)"},
@@ -88,6 +110,9 @@ apps_s apps_examples[]= {
         {"",dflt_init,""} //marks end of handlers
 };
 
+/**
+ *  Test apps and Ideas -> Ignore for now
+ */
 apps_s apps_coming[]= {
         {"x",dflt_init,"[Makey Makey] See <a href='http://iot.fkainka.de/day2'>iot.fkainka.de/day2</a> (UDP, WPS, Webserver)"},
         {"x",dflt_init,"[OnBoard RGB-LED Example] See <a href='http://iot.fkainka.de/day2'>iot.fkainka.de/day2</a> (UDP, WPS, Webserver)"},
@@ -115,14 +140,18 @@ apps_s apps_coming[]= {
         {"",dflt_init,""} //marks end of handlers
 };
 
+/**
+ * Inter apps for Updates etc
+ */
 apps_s apps_intern[]= {
         {"firmware_update",firmware_update,""},
         {"test",udp_test_init,""},
         {"",dflt_init,""} //marks end of handlers
 };
 
-int len_app_lists = 2;
-app_lists_s app_lists[2] = {  {apps_examples,"Example Apps"},
+//List of all lists that should be available public (Selectable by Website)
+const int len_app_lists = 2;
+app_lists_s app_lists[len_app_lists] = {  {apps_examples,"Example Apps"},
                               {apps_iot18,"IoT Adventcalendar 2018"}
                             //  {apps_coming,"ToDo Apps"}
                             };

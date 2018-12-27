@@ -1,3 +1,10 @@
+/**
+ * Apps.hpp
+ *
+ * Makes a JSON Response of all Apps, execute selected app, has default app and handles update
+ *
+ */
+
 #ifndef APP_HPP
 #define APP_HPP
 
@@ -16,6 +23,7 @@
 
 #include "APP_iot18.hpp"
 #include "APP_examples.hpp"
+#include "APP_tests.hpp"
 
 /**
  * Adds a list of all available APPs to a JSON Object - Response to JSON-Request

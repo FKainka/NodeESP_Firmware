@@ -1,3 +1,6 @@
+/**
+ * Apps of the IOT Adventcalendar 2018
+ */
 #ifndef APPIOT18_HPP
 #define APPIOT18_HPP
 
@@ -8,13 +11,18 @@ void dflt_init();
 void task_ref(void* parameter);
 void opt_dflt_init();
 
-//On Board RGB-LED control via website
+/**
+ * On Board RGB-LED control via website
+ */
 void iot18_day2(){
         dflt_init();
         rgb_init(); //deactivates WPS Button if onBoard LED auto!
         server.serveStatic("/app", SPIFFS, "/apps/rgb1.htm");
 }
 
+/**
+ * Sends a UPD-MSG every 5 Sekconds, Task created direktly
+ */
 void iot18_day3(){ //UDP Msg , 5 Sec
         dflt_init();
         udp_init();
@@ -26,6 +34,9 @@ void iot18_day3(){ //UDP Msg , 5 Sec
         }, "task_day3", 2000, NULL, 2, NULL);
 }
 
+/**
+ * Send msgs on Button Press
+ */
 void iot18_day4(){ //UDP Msg , Boot press
         dflt_init();
         udp_init();
@@ -42,8 +53,10 @@ void iot18_day4(){ //UDP Msg , Boot press
         }, "task_d4", 5000, NULL, 2, NULL);
 }
 
-
-void iot18_day5(){  //Message send on Button1 (18) press
+/**
+ * Message send on Button1 (18) press
+ */
+void iot18_day5(){
         dflt_init();
         udp_init();
         buttons_init(buttons_dflt,1, false); //len_leds so only 2!
@@ -63,7 +76,6 @@ void iot18_day5(){  //Message send on Button1 (18) press
                 }
         }, "task_d5", 2000, NULL, 2, NULL);
 }
-
 
 /*
    Touch Buttons, Text to Speech
@@ -97,7 +109,7 @@ void iot18_day6(){
 
 
 /*
-   Staircase Light
+   Staircase Light - Task
  */
 void d7_task(void * parameter ){
         while(1) {
@@ -116,7 +128,10 @@ void d7_task(void * parameter ){
         }
 }
 
-void iot18_day7(){  //Staircase
+/**
+ * Day7 - Staircase
+ */
+void iot18_day7(){
         dflt_init();
         udp_init();
 
@@ -126,8 +141,9 @@ void iot18_day7(){  //Staircase
         xTaskCreate(d7_task, "d7_task",2000, NULL, 3, NULL);
 }
 
-
-
+/**
+ * Task for Day8
+ */
 void d8_task(void * parameter ){
         while(1) {
                 adc_read();
@@ -143,7 +159,9 @@ void d8_task(void * parameter ){
         }
 }
 
-
+/**
+ * Day8 - ADC-READ and Staircase (Day7 task)
+ */
 void iot18_day8(){
         dflt_init();
         udp_init();
@@ -156,7 +174,9 @@ void iot18_day8(){
         xTaskCreate(d8_task, "d8_task",2000, NULL, 3, NULL);
 }
 
-
+/**
+ *  ADC to RGB LED (OnBoard)
+ */
 void iot18_day9(){
         dflt_init();
         udp_init();
@@ -164,17 +184,18 @@ void iot18_day9(){
         rgb_init(); //deactivates WPS Button if onBoard LED auto!
         adc_init(adcs_dflt,1);
 
-
         connection_s* udp_con = new connection_s{false, true, false};
         cmd_handler_s* check_adc = new cmd_handler_s[2]{{"get_adc_state",get_adc_state},{"",NULL}};
         task_parameter_s* task_parameter = new task_parameter_s{check_adc,udp_con,2000};
         xTaskCreate(task_ref,"ADC",10000,(void*)task_parameter,1,NULL);
 }
 
+/**
+ * DEEP Sleep
+ */
 void iot18_day10(){
         opt_dflt_init();
 
-        //status_led = false;
         wifiInit();
         udp_init();
 
@@ -195,16 +216,20 @@ void iot18_day10(){
         esp_deep_sleep_start();
 }
 
-
-
-void iot18_day11(){ //MQTT Test
+/**
+ * MQTT Test
+ */
+void iot18_day11(){
         dflt_init();
         mqtt_init();
 
         mqtt_subscribe_topic("testtopic");
 }
 
-void iot18_day12(){  //Two Buttons MQTT
+/**
+ * Two Buttons MQTT
+ */
+void iot18_day12(){
         dflt_init();
         mqtt_init();
 
@@ -216,12 +241,14 @@ void iot18_day12(){  //Two Buttons MQTT
         xTaskCreate(task_ref,"Buttons",10000,(void*)task_parameter,1,NULL);
 }
 
-void iot18_day13(){  // !!! Problem_ Touch buttons seltsame anordnung
+/**
+ * Touch Buttons + Deep Sleep
+ */
+void iot18_day13(){
         touch_pad_t touchPin;
         touchPin = esp_sleep_get_touchpad_wakeup_status();
 
         opt_dflt_init();
-
 
         int len_touch_d13 = 4;//  sizeof(touch_d14)/sizeof(touch_d14[0]);
         pin_config_s* touch_d13= new pin_config_s[len_touch_d13]{
@@ -239,7 +266,6 @@ void iot18_day13(){  // !!! Problem_ Touch buttons seltsame anordnung
                         JsonObject &rootTch = jsonBuffer.createObject();
 
                         rootTch["cmd"] = "get_touch_state";
-
 
                         rootTch["pin_name"] =touch_d13[i].pin_name.c_str();
                         rootTch["pin_id"] = touch_d13[i].pin_id;
@@ -261,6 +287,9 @@ void iot18_day13(){  // !!! Problem_ Touch buttons seltsame anordnung
         esp_deep_sleep_start();
 }
 
+/**
+ * Smart light (Touch)
+ */
 void iot18_day14(){
         dflt_init();
         mqtt_init();
@@ -283,8 +312,10 @@ void iot18_day14(){
         xTaskCreate(task_ref,"Buttons",10000,(void*)task_parameter,1,NULL);
 }
 
-
-void iot18_day15(){ //IR Rescive
+/**
+ * IR Reciever
+ */
+void iot18_day15(){
         opt_dflt_init(); //option to make dlft when 23 is open;
 
         wps_enable(true);
@@ -303,7 +334,9 @@ void iot18_day15(){ //IR Rescive
         xTaskCreate(task_ref,"IR Task",10000,(void*)task_parameter,1,NULL);
 }
 
-//IR Send Recive
+/**
+ * IR Send Recive
+ */
 void iot18_day16(){
         opt_dflt_init();   //option to make dlft when 23 is open;
         wps_enable(true);
@@ -322,7 +355,9 @@ void iot18_day16(){
         xTaskCreate(task_ref,"IR Task",10000,(void*)task_parameter,1,NULL);
 }
 
-//ADC
+/**
+ * Time set light
+ */
 void iot18_day17(){
         dflt_init();
         mqtt_init();
@@ -346,7 +381,9 @@ void iot18_day17(){
         xTaskCreate(task_ref,"ADC Task",10000,(void*)task_parameter_adc,1,NULL);
 }
 
-//Diode?
+/**
+ * Candle watch
+ */
 void iot18_day18(){
         dflt_init();
         mqtt_init();
@@ -357,7 +394,9 @@ void iot18_day18(){
         xTaskCreate(task_ref,"Fire",10000,(void*)task_parameter,1,NULL);
 }
 
-//Cheerlights
+/**
+ * Cheerlights
+ */
 void iot18_day19(){
         dflt_init();
         mqtt_init();
@@ -366,7 +405,9 @@ void iot18_day19(){
         mqtt_subscribe_topic("pixel/+/set");
 }
 
-//Pföanzenwächter
+/**
+ * Plant watch
+ */
 void iot18_day20(){
         dflt_init();
         mqtt_init();
@@ -379,8 +420,9 @@ void iot18_day20(){
         xTaskCreate(task_ref,"Clima",10000,(void*)task_parameter,1,NULL);
 }
 
-
-//Speaker
+/**
+ * Speaker
+ */
 void iot18_day21(){
       //  opt_dflt_init(); //option to make dlft when 23 is open;
       dflt_init();
@@ -389,7 +431,9 @@ void iot18_day21(){
       speaker_init();
 }
 
-//Climate
+/**
+ * Climate
+ */
 void iot18_day22(){
         dflt_init();
         mqtt_init();
@@ -401,7 +445,9 @@ void iot18_day22(){
         xTaskCreate(task_ref,"Clima",10000,(void*)task_parameter,1,NULL);
 }
 
-//Alarm
+/**
+* Alarm
+ */
 void iot18_day23(){
         dflt_init();
         mqtt_init();
@@ -419,35 +465,16 @@ void iot18_day23(){
         xTaskCreate(task_ref,"Buttons",10000,(void*)task_parameter,1,NULL);
 }
 
+/**
+ * Christmas Light
+ */
 void iot18_day24(){
         dflt_init();
         //  mqtt_init();
         udp_init();
 
         neoPixel_init(NeoPixelType_Rgb, 2, neo_pixel_pin.pin_nr);
-        //  server.serveStatic("/app", SPIFFS, "/apps/rgbArray.htm");
 
-        //mqtt_subscribe_topic("pixel/+/set");
-
-}
-
-
-void dXX_task(void * parameter ){
-        while(1) {
-                if (touch_change) {
-                        touch_state(touchs, len_touchs);
-                        for(int i = 0; i< len_touchs; i++) Serial.printf("Touch %d is %d\n", touchs[i].pin_id,touchs[i].pin_state);
-
-                        DynamicJsonBuffer jsonBuffer; // Allocate the memory pool on the stack
-                        JsonObject &root = jsonBuffer.createObject();
-                        root["cmd"] = "touchs_state";
-                        get_pin_state_json(touchs, len_touchs, root);
-                        udp_send_json(root, udp_set.udp_ip, udp_set.udp_port_send);
-
-                        delay(1000); //debounce
-                        touch_change = false;
-                }
-        }
 }
 
 #endif
