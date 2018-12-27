@@ -1,8 +1,14 @@
+/**
+ *  Config.hpp
+ *
+ * Load and Save Configuration. Also generates the MQTT-ID from MAC Adresse.
+ */
+
 #ifndef CONFIG_H_APP
 #define CONFIG_H_APP
 
 #define MQTT_ID_AUTHOR "[PID]" //only in AUTHORMODE
-#define RESEST_PIN 13
+#define RESEST_PIN 13          //pin for the Config-Reset
 
 #include <ArduinoJson.h>   //https://arduinojson.org/assistant/?utm_source=github&utm_medium=issues
 #include <FS.h>
@@ -10,21 +16,21 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 
-const char* con_file = "/config/config.cfg";
-const char* dflt_con_file =  "/config/dflt_config.cfg";
+const char* con_file = "/config/config.cfg";          //Main Config-File
+const char* dflt_con_file =  "/config/dflt_config.cfg";   //Default Config-File
 
 char baseMacChr[13] = {0};
 char topic[27] = {0};
 
 StaticJsonBuffer<3000> jsonBuffer;       // !!! Allocate the memory pool on the sta
 
-struct connection_s {  //Which Connetions will be established... To Come: Bluetooth, TCP?,
+struct connection_s {       //Which Connetions should be established...
         bool ws;
         bool udp;
         bool mqtt;
 } connection;
 
-struct app_set_s {      //App Executtion settings
+struct app_set_s {          //App Executtion settings
         const char* app_exec = "dflt_init";
 } app_set;
 
@@ -47,14 +53,14 @@ struct gen_set_s {        //Generall Settings
         uint8_t touch_threshold = 30;
 } gen_set;
 
-struct set_udp_s {
+struct set_udp_s {        //UDP Settings
         uint16_t udp_port_recv = 55057;
         uint16_t udp_port_send = 55057;
         const char* udp_ip = "192.168.178.255";
         bool ack = true;
 } udp_set;
 
-struct mqtt_set_s {
+struct mqtt_set_s {       //MQTT Settings
         const char* server_address = "broker.fkainka.de";
         uint16_t port  = 1883;
         const char* client_id ="";
@@ -92,17 +98,21 @@ bool save_ota_set(JsonObject &root);
 bool load_app_set(JsonObject &root);
 bool save_app_set(JsonObject &root);
 
-
 void loadWifiSet();
 bool restore_settings(bool reboot);
-// Loads the configuration from a file
+
+
+/**
+ * Loads the configuration from file
+ * @return true if successfull
+ */
 bool loadConfiguration() {
-        //TotalReset on Pin Reset_Pin
+        //Resset Settings if Reset_Pin is low
         pinMode(RESEST_PIN, INPUT_PULLUP);
         delay(10);
         if (digitalRead(RESEST_PIN)==LOW) restore_settings(false);
 
-
+        //Load default on first run
         bool def_loaded = false;
         const char* cfg_path = con_file;
         if (!SPIFFS.exists(cfg_path)) {
@@ -116,18 +126,18 @@ bool loadConfiguration() {
                 def_loaded = true;
         }
 
+        //Load file and parse JSON
         File file = SPIFFS.open(cfg_path);         // Open file for reading
-        //  StaticJsonBuffer<2048> jsonBuffer;   // Allocate the memory pool on the stack.
         JsonObject &root = jsonBuffer.parseObject(file);     // Parse the root object
 
+        //On error  in JSON-Parsing -> return false
         if (!root.success()) {
                 Serial.println(F("Failed to read JSON Configuration!"));
                 file.close();
                 return false;
         }
 
-        //root.prettyPrintTo(Serial);
-
+        //Get Subset of settings
         JsonObject& gen_set_json = root["gen_set"];
         load_gen_set(gen_set_json);
 
@@ -143,7 +153,7 @@ bool loadConfiguration() {
         JsonObject& mqtt_set_json = root["mqtt_set"];
         load_mqtt_set(mqtt_set_json);
 
-        //Fix for Authormode Bug
+        //Fix for Authormode Bug -> Author may use [PID] instead of Mac
         #ifndef AUTHORMODE
         String auth_id = "[PID]";
         if (String(mqtt_set.client_id) == auth_id) {
@@ -152,15 +162,18 @@ bool loadConfiguration() {
         }
         #endif
 
-        if (def_loaded) dflt_set_mqtt(); //only on default load
+        if (def_loaded) dflt_set_mqtt();    //only on default load -> generates ID from MAC
 
-        file.close();   // Close the file (File's destructor doesn't close the file)
-
-        if (def_loaded) saveConfiguration(true);
-
+        file.close();                       // Close the file (File's destructor doesn't close the file)
+        if (def_loaded) saveConfiguration(true);    //Save if changes where made (on first load for example)
         return true;
 }
 
+/**
+ * Writes the configuration to File on SPIFF
+ * @param  reboot after writing (Should be true in most cases for consistens)
+ * @return        true if successfull
+ */
 bool saveConfiguration(bool reboot = true) {
         if (SPIFFS.exists(con_file)) SPIFFS.remove(con_file);  // Delete existing file, otherwise the configuration is appended to the file
 
@@ -170,7 +183,9 @@ bool saveConfiguration(bool reboot = true) {
                 Serial.println(F("Failed to create file"));
                 return false;
         }
-        JsonObject &root = jsonBuffer.createObject();      // Parse the root object
+
+        // Create the root object, create nestet json with sub settings
+        JsonObject &root = jsonBuffer.createObject();
 
         JsonObject& gen_set_json = root.createNestedObject("gen_set");
         save_gen_set (gen_set_json);
@@ -187,7 +202,6 @@ bool saveConfiguration(bool reboot = true) {
         JsonObject& mqtt_set_json = root.createNestedObject("mqtt_set");
         save_mqtt_set (mqtt_set_json);
 
-        //root.prettyPrintTo(Serial);
 
         if (root.printTo(file) == 0) {         // Serialize JSON to file
                 Serial.println(F("Failed to write to file"));
@@ -195,9 +209,14 @@ bool saveConfiguration(bool reboot = true) {
         file.close();   // Close the file (File's destructor doesn't close the file)
         Serial.println("Config updatet. Restarting.");
         delay(2000);
-        if (reboot) ESP.restart(); //Mandatory. new values only on stack! will be loaded in json buffer
+        if (reboot) ESP.restart();  //Mandatory. new values only on stack! will be loaded in json buffer
 }
 
+/**
+ * Load General Settings
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool load_gen_set(JsonObject &root){
         if (root.containsKey("wifi_mode")) gen_set.wifi_mode = root["wifi_mode"];
         if (root.containsKey("wifi_con_time")) gen_set.wifi_con_time = root["wifi_con_time"];
@@ -210,6 +229,11 @@ bool load_gen_set(JsonObject &root){
         return true;
 }
 
+/**
+ * Load Over The Air Update Settings
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool load_ota_set(JsonObject &root){
         ota_set.spiffs_version = root["spiffs_version"];
         ota_set.update_url = root["update_url"];
@@ -218,6 +242,11 @@ bool load_ota_set(JsonObject &root){
         return true;
 }
 
+/**
+ * Save Over The Air Update Settings to JSON Object
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool save_ota_set(JsonObject &root){
         root["spiffs_version"] = ota_set.spiffs_version;
         root["update_url"] =   ota_set.update_url;
@@ -226,6 +255,11 @@ bool save_ota_set(JsonObject &root){
         return true;
 }
 
+/**
+ * Save General Settings to JSON Object
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool save_gen_set(JsonObject &root){
         root["wifi_mode"] =   gen_set.wifi_mode;
         root["wifi_con_time"] = gen_set.wifi_con_time;
@@ -238,6 +272,11 @@ bool save_gen_set(JsonObject &root){
         return true;
 }
 
+/**
+ * Load UDP Settings
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool load_udp_set(JsonObject &root){
         udp_set.udp_port_recv = root["udp_port_recv"];
         udp_set.udp_ip= root["udp_ip"];
@@ -246,6 +285,11 @@ bool load_udp_set(JsonObject &root){
         return true;
 }
 
+/**
+ * Save UDP Settings to JSON Object
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool save_udp_set(JsonObject &root){
         root["udp_ip"] =   udp_set.udp_ip;
         root["udp_port_recv"] = udp_set.udp_port_recv;
@@ -254,16 +298,29 @@ bool save_udp_set(JsonObject &root){
         return true;
 }
 
+/**
+ * Load APP Settings (App to execute)
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool load_app_set(JsonObject &root){
         if (root.containsKey("app_exec")) app_set.app_exec = root["app_exec"];
         return true;
 }
 
+/**
+ * Save  APP Settings (App to execute) to JSON Object
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 bool save_app_set(JsonObject &root){
         root["app_exec"] =   app_set.app_exec;
         return true;
 }
 
+/**
+ * Generate Client ID from MAC-Adress and set topics based on ID
+ */
 void dflt_set_mqtt(){
         uint8_t baseMac[6];
         esp_read_mac(baseMac, ESP_MAC_WIFI_STA); // Get MAC address for WiFi station
@@ -277,12 +334,17 @@ void dflt_set_mqtt(){
         mqtt_set.last_will_topic =topic;
 }
 
+/**
+ * Load MQTT Settings
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 void load_mqtt_set(JsonObject &root){
         mqtt_set.server_address =  root["server_address"];
         mqtt_set.port  =  root["port"];
 
         #ifdef AUTHORMODE
-        mqtt_set.client_id = MQTT_ID_AUTHOR;
+        mqtt_set.client_id = MQTT_ID_AUTHOR;    //on Author Mode use [PID]
         #else
         mqtt_set.client_id = root["client_id"];
         #endif
@@ -300,6 +362,11 @@ void load_mqtt_set(JsonObject &root){
         mqtt_set.last_will_retain  =   root["last_will_retain"];
 }
 
+/**
+ * Save MQTT Settings to JSON Object
+ * @param  root Json object
+ * @return true if sucessfull
+ */
 void save_mqtt_set(JsonObject &root){
         root["server_address"] =   mqtt_set.server_address;
         root["port"]= mqtt_set.port;
@@ -318,13 +385,22 @@ void save_mqtt_set(JsonObject &root){
         root["last_will_retain"]= mqtt_set.last_will_retain;
 }
 
+/**
+ * REstore default settings by deleting settings and reboot
+ * @param  reboot if true (should be true almost always)
+ * @return       true if susccesfull
+ */
 bool restore_settings(bool reboot = true){
         if (SPIFFS.remove(con_file)) Serial.println("Config file deleted");
         if (reboot) ESP.restart();
         return true;
 }
 
-
+/**
+ * Convert Wifi-Mode settings to ENUM
+ * @param  mode as integer
+ * @return      mode as Enumeration
+ */
 wifi_mode_t intToMode(int mode){
         switch (mode) {
         case 1: return WIFI_MODE_STA;
@@ -334,5 +410,4 @@ wifi_mode_t intToMode(int mode){
         default: return WIFI_MODE_NULL;
         }
 }
-
 #endif

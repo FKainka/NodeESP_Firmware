@@ -5,7 +5,7 @@
  *
  */
 
-//Current Version of APP, Spiff version is saved in config
+//Current Version of APP, Spiff version is also saved in config file
 #define VERSION "v1.4_16122018"
 #define SPIFFS_VERSION "v1.2_16122018"
 
