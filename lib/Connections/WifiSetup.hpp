@@ -42,7 +42,7 @@ void firstInit();
  */
 bool wifiInit(){
         WiFi.onEvent(WiFiEvent); //Wifi Event hanlder: Print WiFi Status Messages
-
+      //  WiFi.disconnect();
         if (gen_set.wifi_mode==2 | gen_set.wifi_mode==3) {
                 strlen(gen_set.ap_pwd) ? WiFi.softAP(gen_set.ap_ssid, gen_set.ap_pwd) : WiFi.softAP(gen_set.ap_ssid);
         }
@@ -67,7 +67,9 @@ bool wifiInit(){
 
                         disconnect_msg = false;   //No ´Debug msg
                         for (int i = gen_set.wifi_con_time * 10; i; i--) { //Wait for WiFi Connection, gen_set = Setting from config.hpp
-                                if ( WiFi.status() == WL_CONNECTED ||WiFi.status() == WL_CONNECT_FAILED) break;
+                              if (WiFi.isConnected()) Serial.println("CONNECTED");
+                          //    Serial.println(WiFi.localIP());
+                              if ( WiFi.status() == WL_CONNECTED ||WiFi.status() == WL_CONNECT_FAILED) break;
                                 Serial.print(".");
                                 delay(100);
                         }

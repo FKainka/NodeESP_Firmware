@@ -1,12 +1,28 @@
-/**
- * Generall Informations
- *
- * This is the main file, meaning that this is kind of the programm start. It is saved as ino-file so it can also be opened in the Ardino IDE.
- *
- */
+ //******************************************************************************
+ // NodeESP Firmware
+ // Version 1.5 28.02.2019
+ // Copyright 2019 Fabian Kainka
+ // Licensed under GNU GPL 3.0 and later, under this license absolutely no warranty given
+ //
+ // // See www.iot.fkainka.de for documentation
+ //
+ // Changelog:
+ // Updated Framework (1.7) + Libraries (TCPAsync)
+ //
+ // FIX for error: C99 in esp_wps.cpp:
+ // https://github.com/espressif/esp-idf/pull/2869/files
+ // change file .platformio/packages/framework-arduinoespressif32/tools/sdk/include/esp32/esp_wps.h
+ // line 81ff:
+ // {.manufacturer = "ESPRESSIF"},
+ // {.model_number = "ESP32"},  \
+ // {.model_name = "ESPRESSIF IOT"},  \
+ // {.device_name = "ESP STATION"},  \
+
+ //******************************************************************************
+
 
 //Current Version of APP, Spiff version is also saved in config file
-#define VERSION "v1.4_16122018"
+#define VERSION "v1.5_28022019"
 #define SPIFFS_VERSION "v1.2_16122018"
 
 #include <SPIFFS.h>
