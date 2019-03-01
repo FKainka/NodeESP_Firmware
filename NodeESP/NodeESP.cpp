@@ -7,7 +7,7 @@
  // // See www.iot.fkainka.de for documentation
  //
  // Changelog:
- // Updated Framework (1.7) + Libraries (TCPAsync)
+ // Updated Framework (1.7) + Libraries (TCPAsync 1.0.3)
  //
  // FIX for error: C99 in esp_wps.cpp:
  // https://github.com/espressif/esp-idf/pull/2869/files

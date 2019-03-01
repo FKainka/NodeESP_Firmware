@@ -25,6 +25,7 @@
 esp_wps_config_t config = WPS_CONFIG_INIT_DEFAULT(ESP_WPS_MODE);  //WPS
 bool disconnect_msg = false;
 
+
 //Variables for detecting long WPS Buttons press
 volatile long wps_pin_press_duration = 0;
 volatile long wps_pin_press_down_time = 0;
@@ -42,16 +43,16 @@ void firstInit();
  */
 bool wifiInit(){
         WiFi.onEvent(WiFiEvent); //Wifi Event hanlder: Print WiFi Status Messages
-      //  WiFi.disconnect();
+
         if (gen_set.wifi_mode==2 | gen_set.wifi_mode==3) {
                 strlen(gen_set.ap_pwd) ? WiFi.softAP(gen_set.ap_ssid, gen_set.ap_pwd) : WiFi.softAP(gen_set.ap_ssid);
         }
 
         wifi_config_t conf;
         esp_wifi_get_config(WIFI_IF_STA,&conf);   //IF unintitialised set to ap mode!
-        String val = String(reinterpret_cast<const char*>(conf.sta.ssid));
+        String ssid = String(reinterpret_cast<const char*>(conf.sta.ssid));
 
-        if (val == "") {  //if no Wifi-Data is saved in memory
+        if (ssid == "") {  //if no Wifi-Data is saved in memory
                 Serial.println("No Wifi Data - AP Mode"); //Seems to work but no Message? !!!
                 WiFi.mode(WIFI_AP);
                 statusLed(yellow);
@@ -66,10 +67,21 @@ bool wifiInit(){
                         statusLed(blink_green); //Blink while trying to establish connection
 
                         disconnect_msg = false;   //No ´Debug msg
+                        int failed_attempts = 0;
                         for (int i = gen_set.wifi_con_time * 10; i; i--) { //Wait for WiFi Connection, gen_set = Setting from config.hpp
                               if (WiFi.isConnected()) Serial.println("CONNECTED");
                           //    Serial.println(WiFi.localIP());
-                              if ( WiFi.status() == WL_CONNECTED ||WiFi.status() == WL_CONNECT_FAILED) break;
+                              if ( WiFi.status() == WL_CONNECTED ) break;
+
+                              // Fix for bug https://github.com/espressif/arduino-esp32/issues/2501
+                              if (WiFi.status() == WL_CONNECT_FAILED){
+                                Serial.println("Failed: " + failed_attempts);
+                                if (failed_attempts++ >3) break;
+                                String pw = String(reinterpret_cast<const char*>(conf.sta.password));
+                                WiFi.disconnect(true);
+                                WiFi.begin(ssid.c_str(), pw.c_str());
+                              }
+
                                 Serial.print(".");
                                 delay(100);
                         }
@@ -96,7 +108,7 @@ bool wifiInit(){
 
 void wps_enable(bool enable){
         //Attach Interrupt for Long Button Press on WPS Button
-        //ParameteR: Pin, Function to call, Events (RISING, FALLING, CHANGE)
+        //Parameter: Pin, Function to call, Events (RISING, FALLING, CHANGE)
         if (enable) attachInterrupt(digitalPinToInterrupt(wps_pin), wps_pin_change, CHANGE);
         else detachInterrupt(wps_pin);
 }
@@ -107,7 +119,10 @@ void wps_enable(bool enable){
 void taskWpsSetup(void * parameter ){
         Serial.println("\nStarting WPS");
         WiFi.mode(WIFI_MODE_STA);          //WPS works oly in Station Mode!
-        esp_wifi_wps_enable(&config);
+
+        esp_err_t err = esp_wifi_wps_enable(&config);
+        Serial.println("Error: "+ String(err));
+
         if (esp_wifi_wps_start(0)== 0) {
                 disconnect_msg= false;
                 statusLed(blink_yellow);   //Start blinking while trying to estblish connection
@@ -147,6 +162,8 @@ void IRAM_ATTR wps_pin_change() {
  * @param event, info
  */
 void WiFiEvent(WiFiEvent_t event, system_event_info_t info){
+        //Serial.println("WiFi Event: "+ String(event));
+
         switch(event) {
         case SYSTEM_EVENT_STA_GOT_IP:           //WiFi Connection established and IP assigned
                 Serial.println("\n\nConnected to: " + String(WiFi.SSID()));
