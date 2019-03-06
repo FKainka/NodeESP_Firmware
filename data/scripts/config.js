@@ -88,8 +88,27 @@ function changeAppSet() {
   appSelect.innerHTML = "Select Application";
 
   for (i in msg_apps[app_set]) {
-    appSelect.innerHTML += '<option value="' + msg_apps[app_set][i].app + '"/>' + msg_apps[app_set][i].info + '</option>';
+    appSelect.innerHTML += '<option value="' + msg_apps[app_set][i].app + '"/>' + msg_apps[app_set][i].title + '</option>';
   }
+  changeSelectedApp();
+}
+
+function changeSelectedApp() {
+  var appSelect = document.getElementById('app_select');
+  var div_selected = document.getElementById('app_selected');
+  var app_selected = appSelect.value;
+  var appSets = document.getElementById('app_set_select');
+  var app_set = appSets.value;
+
+  for (i in msg_apps[app_set]) {
+    if (msg_apps[app_set][i].app == app_selected){
+       // console.log(msg_apps[app_set][i].info);
+         div_selected.innerHTML =  msg_apps[app_set][i].title + ":<br>"+msg_apps[app_set][i].info;
+    }
+  }
+
+
+
 }
 
 function setWifiSSID(slct) {

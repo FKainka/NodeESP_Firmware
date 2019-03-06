@@ -33,6 +33,15 @@ pin_config_s* alarm_pin =NULL;
 TaskHandle_t taskRgbFadeHandle = NULL;  //Handler for Blink Task, needed to Delete Task
 TaskHandle_t taskSireneHandle = NULL;  //Handler for Blink Task, needed to Delete Task
 
+//for intern Temperatur Sensor
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint8_t temprature_sens_read();
+#ifdef __cplusplus
+}
+#endif
+
 typedef struct  {
         RgbColor fromColor;
         RgbColor toColor;
@@ -472,6 +481,16 @@ double get_temp(int RawADC) {
 
 
 //--------------------------------------------------------------------------------
+//Intern Sensors NodeESP
+
+int get_intern_hall(){
+  return hallRead();
+}
+
+float get_intern_temp(){
+    uint8_t temp_farenheit = temprature_sens_read();
+    return ((temp_farenheit - 32) / 1.8);
+}
 
 
 

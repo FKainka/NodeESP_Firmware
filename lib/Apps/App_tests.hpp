@@ -6,12 +6,34 @@
 
 #include <WiFiUdp.h>
 #include <ArduinoJson.h> //https://arduinojson.org/assistant/?utm_source=github&utm_medium=issues
+#include <SdCard.hpp>
+
 
 void dflt_init();
 void task_ref(void* parameter);
 void opt_dflt_init();
 
 /*--------------------------------*/
+
+void sd_test_init(){
+  dflt_init();
+  if (functions.sd_card) test_sd();
+}
+
+void test_test(){
+        dflt_init();
+
+        pin_config_s* leds= new pin_config_s[1]{
+          {1,blue_led,false,0,"LED"},
+        };
+
+        digital_init(leds,1);
+
+        mqtt_init();
+        mqtt_subscribe_topic("light/+");
+}
+
+
 void mqtt_test(){
         dflt_init();
         mqtt_init();

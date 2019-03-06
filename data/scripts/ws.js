@@ -4,7 +4,7 @@ function connect() {
   try { //if Script is on Board
     connection = new WebSocket('ws://' + location.hostname + ':80/ws', ['arduino']);
   } catch (err) { //Local excution
-    connection = new WebSocket('ws:/192.168.178.141/ws', ['arduino']);
+    connection = new WebSocket('ws:/192.168.178.43/ws', ['arduino']);
     //connection = new WebSocket('ws:/nodeesp.local:80/ws', ['arduino']);
   }
 

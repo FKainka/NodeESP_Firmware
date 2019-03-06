@@ -17,9 +17,9 @@
 		<H1>Welcome...</H1> <br>to the NodeESP main page. Here you will find some information, configurations and other secrets regarding your new Board. Just browse around and find out.
 		<br><br><br><br>
 	<div align="middle">
-				<a href="app" class="button" id="app_link">Application Page</a><br>
+			<a href="app" class="button" id="app_link">Application Page</a><br>
 			<a href="config\index.htm" class="button">Board Configuration</a><br>
-			<br>
+			<a href="sd" class="button" id="sd_link">SD Card Main Page<br></a><br>
 			<a href="info\layout.htm" class="button">NodeESP Pinout</a><br>
 			<a href="https://iot.fkainka.de/nodeesp-technical-specs" class="button">Board Specifications</a><br>
 			<a href="https://iot.fkainka.de/nodeesp-command-reference" class="button">Command Reference</a><br>
@@ -38,9 +38,16 @@
 	var app_link = document.getElementById("app_link");
 	app_link.style.display = 'none';
 
+	var sd_link = document.getElementById("sd_link");
+	sd_link.style.display = 'none';
+
 	var reader = new XMLHttpRequest();
 	reader.open('get', 'app', true);
-	reader.onreadystatechange = checkReadyState;
+	reader.onreadystatechange = checkReadyState();
+
+	var reader_sd = new XMLHttpRequest();
+	reader_sd.open('get', 'sd', true);
+	reader_sd.onreadystatechange = checkReadyStateSD();
 
 	function checkReadyState() {
 		if (reader.readyState === 4) {
@@ -51,7 +58,19 @@
 			}
 		}
 	}
+
+	function checkReadyStateSD() {
+		if (reader.readyState === 4) {
+			if ((reader.status == 200) || (reader.status == 0)) {
+				sd_link.style.display = 'inline-block';
+			} else {
+				sd_link.style.display = 'none';
+			}
+		}
+	}
+
 	reader.send(null);
+	reader_sd.send(null);
 </script>
 
 </HTML>

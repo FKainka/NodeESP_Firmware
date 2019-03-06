@@ -33,20 +33,24 @@
  * @return         true if susccesfull
  */
 bool list_apps(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
+        Serial.println(uxTaskGetStackHighWaterMark(NULL));
         answ["cmd"] = "get_app_set";    //the answear is of type: get_app_set
 
         JsonObject& app_array_json = answ.createNestedObject("apps"); //Create nestet array of APPSs
         for (int i = 0; i< len_app_lists; i++) {
                 JsonArray& app_list_array_json = app_array_json.createNestedArray(app_lists[i].info.c_str()); //trick to create array on other buffer
                 apps_s* exc_app = app_lists[i].apps_pnt;
+                Serial.println(uxTaskGetStackHighWaterMark(NULL));
                 while(exc_app->app != "") {
                         JsonObject& app_json = app_list_array_json.createNestedObject();
                         app_json["app"] = (exc_app->app).c_str();
+                        app_json["title"] = (exc_app->title).c_str();
                         app_json["info"] = (exc_app->info).c_str();
                         if  (String(app_set.app_exec) == exc_app->app) answ["app_running"] = exc_app->info;
                         exc_app++;
                 }
         }
+        Serial.println(uxTaskGetStackHighWaterMark(NULL));
         hasAnsw = true;
         return true;
 }
@@ -138,11 +142,12 @@ void firmware_update(){
 }
 
 /**
- * Default APP:  enables WPS, Establish wifi, Initiate Webserver
+ * Default APP:  enables WPS, Establish wifi, Check for SD Card, Initiate Webserver
  */
 void dflt_init(){
         wps_enable(true);
-        wifiInit();
+        functions.wifi = wifiInit();
+        functions.sd_card = init_sd();
         webserver_init();
 }
 

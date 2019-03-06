@@ -13,6 +13,28 @@ void dflt_init();
 void task_ref(void* parameter);
 void opt_dflt_init();
 
+void onboard_led_exmpl(){
+        dflt_init();
+        rgb_init(); //deactivates WPS Button if onBoard LED auto!
+        server.serveStatic("/app", SPIFFS, "/apps/rgb1.htm");
+}
+
+
+void mqtt_blue_led(){
+  dflt_init();
+
+  pin_config_s* leds= new pin_config_s[1]{
+    {1,blue_led,false,0,"LED"},
+  };
+
+  digital_init(leds,1);
+
+  mqtt_init();
+  mqtt_subscribe_topic("light/+");
+}
+
+
+
 /**
  * Test 2 Buttons (UDP & MQTT)
  */

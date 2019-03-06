@@ -36,14 +36,15 @@
 				<div data-auto id="app_running">
 				</div><br>
 				<B>Available Apps</B> <br>
-
 				<select class="slct" id="app_set_select" data-auto onchange="changeAppSet();">
 						 <option value="init_dflt" >Select Set of Applications</option>
 				</select>
-				<select class="slct" id="app_select" data-auto>
+				<select class="slct" id="app_select" data-auto onchange="changeSelectedApp();">
 					<option value="init_dflt" >init_dflt: The default App with WPS Button and Configuration Website</option>
-				</select>
-				<br><br>
+				</select><br><br>
+				<B>Info Selected App</B> <br>
+				<div id="app_selected">
+				</div><br>
 				<input type="button" class="btn" value="Submit" onclick="sendForm(this.form);">
 			</form>
 		</details>

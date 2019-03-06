@@ -7,7 +7,11 @@
  // // See www.iot.fkainka.de for documentation
  //
  // Changelog:
- // Updated Framework (1.7) + Libraries (TCPAsync 1.0.3)
+ // - 28.02.2019 Updated Framework (1.7) + Libraries (TCPAsync 1.0.3)
+ // - 01.03.2019 Back to Framework (1.0.2) +  TCPAsync 1.0
+ //    + added Selected App DIV in website, changed app stile to title +  info,
+ //    + added SD Card Support (call nodeesp.local/sd)
+ //
  //
  // FIX for error: C99 in esp_wps.cpp:
  // https://github.com/espressif/esp-idf/pull/2869/files

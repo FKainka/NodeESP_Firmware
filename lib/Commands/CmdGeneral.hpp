@@ -19,9 +19,25 @@ bool testtopic(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
         return true;
 }
 
+bool get_intern_temp(HANDLER_PARAMETER){
+        answ["cmd"] = msg["cmd"];
+        answ["value"] = get_intern_temp();
+        hasAnsw = true;
+        return true;
+}
+
+bool get_intern_hall(HANDLER_PARAMETER){
+        answ["cmd"] = msg["cmd"];
+        answ["value"] = get_intern_hall();
+        hasAnsw = true;
+        return true;
+}
+
 bool light_on(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
         if (len_leds <= 0 || leds == NULL) return false; //No LEDs Definded
-        leds[0].pin_state = true;
+        bool inv = false;
+        if (msg.containsKey("inv")) inv = msg.get<boolean>("inv");
+        inv ? leds[0].pin_state = false: leds[0].pin_state = true;
         digital_state();
         hasAnsw = false;
         return true;
@@ -29,7 +45,9 @@ bool light_on(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
 
 bool light_off(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
         if (len_leds <= 0 || leds == NULL) return false; //No LEDs Definded
-        leds[0].pin_state = false;
+        bool inv = false;
+        if (msg.containsKey("inv")) inv = msg.get<boolean>("inv");
+        inv ? leds[0].pin_state = true: leds[0].pin_state = false;
         digital_state();
         hasAnsw = false;
         return true;
@@ -41,8 +59,6 @@ bool light_pwm(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
         hasAnsw = false;
         return true;
 }
-
-
 
 bool get_button_config(HANDLER_PARAMETER){
         if (len_buttons <= 0 || buttons == NULL) return false; //No Buttons Definded

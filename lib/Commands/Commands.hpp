@@ -45,6 +45,9 @@ bool ir_send(HANDLER_PARAMETER);
 bool test(HANDLER_PARAMETER);
 bool testtopic(HANDLER_PARAMETER);
 
+bool get_intern_temp(HANDLER_PARAMETER);
+bool get_intern_hall(HANDLER_PARAMETER);
+
 bool light_on(HANDLER_PARAMETER);
 bool light_off(HANDLER_PARAMETER);
 bool light_pwm(HANDLER_PARAMETER);
@@ -195,6 +198,9 @@ cmd_handler_s cmd_handler_gen[]= {
         {"light_on",light_on},
         {"light_off",light_off},
         {"light_pwm",light_pwm},
+
+        {"get_intern_temp", get_intern_temp},
+        {"get_intern_hall", get_intern_hall},
 
         {"get_button_state",get_button_state},
         {"get_button_config",get_button_config},

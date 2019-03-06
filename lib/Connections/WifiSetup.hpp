@@ -71,8 +71,9 @@ bool wifiInit(){
                         for (int i = gen_set.wifi_con_time * 10; i; i--) { //Wait for WiFi Connection, gen_set = Setting from config.hpp
                               if (WiFi.isConnected()) Serial.println("CONNECTED");
                           //    Serial.println(WiFi.localIP());
-                              if ( WiFi.status() == WL_CONNECTED ) break;
+                              if ( WiFi.status() == WL_CONNECTED || WiFi.status() == WL_CONNECT_FAILED ) break;
 
+                              /* only 1.7.0
                               // Fix for bug https://github.com/espressif/arduino-esp32/issues/2501
                               if (WiFi.status() == WL_CONNECT_FAILED){
                                 Serial.println("Failed: " + failed_attempts);
@@ -80,7 +81,7 @@ bool wifiInit(){
                                 String pw = String(reinterpret_cast<const char*>(conf.sta.password));
                                 WiFi.disconnect(true);
                                 WiFi.begin(ssid.c_str(), pw.c_str());
-                              }
+                              }*/
 
                                 Serial.print(".");
                                 delay(100);
@@ -103,7 +104,7 @@ bool wifiInit(){
                         }
                 }
         }
-        return true;
+        return false;
 }
 
 void wps_enable(bool enable){
@@ -111,6 +112,7 @@ void wps_enable(bool enable){
         //Parameter: Pin, Function to call, Events (RISING, FALLING, CHANGE)
         if (enable) attachInterrupt(digitalPinToInterrupt(wps_pin), wps_pin_change, CHANGE);
         else detachInterrupt(wps_pin);
+        functions.wps = enable;
 }
 
 /**
