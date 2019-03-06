@@ -76,6 +76,7 @@ void udp_test_init(){
 void tvLight(){
         dflt_init();
         server.serveStatic("/app", SPIFFS, "/apps/rgbArray.htm");
+        functions.app_page = true;
         neoPixel_load();
         cmd_handler_list.ws_list = new cmd_handler_s*[3]  {
                                            cmd_handler, cmd_handler_TvLight,NULL

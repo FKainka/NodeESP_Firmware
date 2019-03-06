@@ -32,6 +32,7 @@ struct functions_s {       //Which Functions have been initialised successfully
         bool udp;
         bool mqtt;
         bool sd_card;
+        bool app_page;
 } functions;
 
 struct connection_s {       //Which Connetions should be established...
@@ -393,6 +394,23 @@ void save_mqtt_set(JsonObject &root){
         root["last_will_msg"]= mqtt_set.last_will_msg;
         root["last_will_topic"]= mqtt_set.last_will_topic;
         root["last_will_retain"]= mqtt_set.last_will_retain;
+}
+
+
+/**
+ * Save Over The Air Update Settings to JSON Object
+ * @param  root Json object
+ * @return true if sucessfull
+ */
+bool get_functions(JsonObject &root){
+        root["wifi_ap"] = functions.wifi_ap;
+        root["wps"] =   functions.wps;
+        root["webserver"] =   functions.webserver;
+        root["udp"]= functions.udp;
+        root["mqtt"] = functions.mqtt;
+        root["sd_card"] =   functions.sd_card;
+        root["app_page"] =   functions.app_page;
+        return true;
 }
 
 /**

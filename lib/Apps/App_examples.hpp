@@ -17,6 +17,7 @@ void onboard_led_exmpl(){
         dflt_init();
         rgb_init(); //deactivates WPS Button if onBoard LED auto!
         server.serveStatic("/app", SPIFFS, "/apps/rgb1.htm");
+        functions.app_page = true;
 }
 
 
