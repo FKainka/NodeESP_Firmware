@@ -105,6 +105,7 @@ bool get_mqtt_set(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
 }
 
 bool set_app_set(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
+        if (!msg.containsKey("app_select")) return false;
         app_set.app_exec = msg["app_select"];
         saveConfiguration(true);
         return true;

@@ -25,14 +25,14 @@ char topic[27] = {0};
 StaticJsonBuffer<3000> jsonBuffer;       // !!! Allocate the memory pool on the sta
 
 struct functions_s {       //Which Functions have been initialised successfully
-        bool wifi;
-        bool wifi_ap;
-        bool wps;
-        bool webserver;
-        bool udp;
-        bool mqtt;
-        bool sd_card;
-        bool app_page;
+        bool wifi = false;
+        bool wifi_ap = false;
+        bool wps = false;
+        bool webserver = false;
+        bool udp = false;
+        bool mqtt = false;
+        bool sd_card = false;
+        bool app_page = false;
 } functions;
 
 struct connection_s {       //Which Connetions should be established...

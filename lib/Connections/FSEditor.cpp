@@ -1,9 +1,11 @@
 #include "FSEditor.h"
 #include <FS.h>
 #include <SPIFFS.h>
+#include <SD.h>
+
 
 #define SPIFFS_MAXLENGTH_FILEPATH 32
-const char *excludeListFile = "/.exclude.files";
+const char *excludeListFile = "/editor/exclude_files.txt";
 
 typedef struct ExcludeListS {
         char *item;
@@ -143,7 +145,7 @@ bool FSEditor::canHandle(AsyncWebServerRequest *request){
                         if(request->hasParam("list"))
                                 return true;
                         if(request->hasParam("edit")) {
-                                String path = request->arg("edit");
+                                String path = request->arg("edit"); //!!! param
                                 FS fs = getPath(path);
                                 request->_tempFile = fs.open(path, "r");
                                 if(!request->_tempFile) {
@@ -206,10 +208,16 @@ bool FSEditor::createPathJson(FS fs, String path, bool sd, JsonArray& msg){
                 File entry = dir.openNextFile();
                 if (!entry) break;
 
-                JsonObject& msg_element = msg.createNestedObject();
-
                 String filename = entry.name();
                 sd ? filename = "/sd"+filename : filename = "/intern"+filename;
+                //Serial.println(filename);
+                if (isExcluded(_fs,filename.c_str())) {
+                        //Serial.println ("Excluded File: " + filename);
+                        entry.close();
+                        continue;
+                }
+
+                JsonObject& msg_element = msg.createNestedObject();
                 bool directory = entry.isDirectory();
                 msg_element["type"] = directory ? "dir" : "file";
                 msg_element["name"] = filename;
@@ -227,8 +235,8 @@ bool FSEditor::createPathJson(FS fs, String path, bool sd, JsonArray& msg){
  * @return      true if exists
  */
 bool FSEditor::exists(String path, FS fs){
-   if(!_isSd) return SPIFFS.exists(path) ;
-    else return fs.exists(path);
+        if(!_isSd) return SPIFFS.exists(path);
+        else return fs.exists(path);
 }
 
 
@@ -280,19 +288,21 @@ void FSEditor::handleRequest(AsyncWebServerRequest *request){
                         }
                 }
         } else if(request->method() == HTTP_DELETE) {
-                if(request->hasParam("path", true)){
+                if(request->hasParam("path", true)) {
                         String path = request->getParam("path", true)->value();
                         FS fs = getPath(path);
-                      //  Serial.println("HTTP DELETE: " + path);
-                        fs.remove(path);
-                        request->send(200, "", "DELETE: "+request->getParam("path", true)->value());
+                        if(_isSd && (path.indexOf('.')<0)) {
+                                SD.rmdir(path) ? request->send(200, "", "DELETE: "+path) : request->send(500);
+                        }else{
+                                fs.remove(path) ? request->send(200, "", "DELETE: "+path) : request->send(500);
+                        }
                 } else
                         request->send(404);
         } else if(request->method() == HTTP_POST) {
                 if(request->hasParam("data", true, true)) {
                         String path = request->getParam("data", true, true)->value();
                         FS fs = getPath(path);
-                      //  Serial.println("HTTP POST: " + path);
+                        //  Serial.println("HTTP POST: " + path);
 
                         if (exists(path, fs)) {
                                 request->send(200, "", "UPLOADED: "+request->getParam("data", true, true)->value());
@@ -312,13 +322,19 @@ void FSEditor::handleRequest(AsyncWebServerRequest *request){
                         if(exists(filename, fs)) {
                                 request->send(200);
                         } else {
-                                fs::File f = fs.open(filename, "w");
-                                if(f) {
-                                        f.write((uint8_t)0x00);
-                                        f.close();
-                                        request->send(200, "", "CREATE: "+filename);
-                                } else {
-                                        request->send(500);
+                                if(_isSd && (filename.indexOf('.')<0)) {
+                                        //SD and not file -> create folder
+                                        SD.mkdir(filename) ? request->send(200, "", "CREATE FOLDER: "+filename) : request->send(500);
+                                }
+                                else{
+                                        fs::File f = fs.open(filename, "w");
+                                        if(f) {
+                                                f.write((uint8_t)0x00);
+                                                f.close();
+                                                request->send(200, "", "CREATE: "+filename);
+                                        } else {
+                                                request->send(500);
+                                        }
                                 }
                         }
                 } else
@@ -330,7 +346,7 @@ void FSEditor::handleUpload(AsyncWebServerRequest *request, const String& filena
         if(!index) {
                 if(!_username.length() || request->authenticate(_username.c_str(),_password.c_str())) {
                         _authenticated = true;
-                        String filename =filename_c ;
+                        String filename =filename_c;
                         FS fs = getPath(filename);
                         request->_tempFile = fs.open(filename, "w");
                         _startTime = millis();

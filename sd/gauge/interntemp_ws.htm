@@ -6,19 +6,24 @@
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
   <title>NanoESP</title>
   <link rel="stylesheet" href="/style.css">
+  <script src="/scripts/ws.js"></script>
+  <script src="/scripts/auto.js"></script>
 
 </HEAD>
 
 <body>
   <header class="headfood">
-    <h1>NanoESP (SD) - Intern Tempeatur</h1>
+    <h1>NanoESP - SD WEBSOCKET</h1>
   </header>
 
   <article>
     <div align=center>
     <H2>NodeESP Intern Tempertur Sensor</H2>
     <br><br>
-    <canvas id="tempGauge"></canvas>
+    <form id="get_intern_temp" align=middle>
+        <canvas id="value" data-auto></canvas>
+    </form>
+
     </div>
   </article>
 
@@ -28,7 +33,10 @@
 	</footer>
 
   <script src="/sd/scripts/gauge.js"> </script> <!-- infos: https://github.com/Mikhus/canvas-gauges  -->
+
   <script language="JavaScript">
+    //var connection = connect();
+
     function eExist(elementId) {
       var element = document.getElementById(elementId);
       if (element !== null) {
@@ -38,9 +46,9 @@
       }
     }
 
-    if (eExist("tempGauge")) {
-      tempGauge = new RadialGauge({
-        renderTo: ("tempGauge"),
+    if (eExist("value")) {
+      value = new RadialGauge({
+        renderTo: ("value"),
         highlights: [{
             from: 0,
             to: 20,
@@ -70,24 +78,41 @@
         units: " C",
         colorValueBoxShadow: false
       })
-      tempGauge.draw();
+      value.draw();
     }
 
+	 	
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        var json_msg = JSON.parse(xhttp.responseText);
-        console.log(json_msg)
-        tempGauge.value = json_msg["value"];
+         var json_func = JSON.parse(xhttp.responseText);
+         console.log(json_func)
+           console.log(json_func["value"])
+          value.value = json_func["value"];
       }
     };
-    
-    function getInternTemp(){
-       xhttp.open("GET", "/cmd?cmd=get_intern_temp", true);
-       xhttp.send();
+    xhttp.open("GET", "/cmd?cmd=get_intern_temp", true);
+    xhttp.send();
+
+
+    function onConnect() {
+      connection.send(JSON.stringify({
+        "cmd": "get_intern_temp"
+      }));
     }
-    
-    setInterval(getInternTemp, 5000)
+
+    function handler(msg) {
+      console.log(msg);
+      autoFill(msg); //included in auto.js
+    }
+
+    function sendForm(form) {
+      msg = autoJson(form);
+      console.log(msg);
+      connection.send(autoJson(form));
+    }
   </script>
+
 </body>
+
 </HTML>

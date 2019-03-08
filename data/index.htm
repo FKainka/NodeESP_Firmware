@@ -45,7 +45,7 @@
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
          var json_func = JSON.parse(xhttp.responseText);
-         console.log(json_func)
+         console.log(json_func);
          if (json_func["app_page"]) app_link.style.display = 'inline-block';
          if (json_func["sd_card"]) sd_link.style.display = 'inline-block';
       }

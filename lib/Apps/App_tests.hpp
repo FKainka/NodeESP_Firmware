@@ -9,6 +9,7 @@
 #include <SdCard.hpp>
 
 
+
 void dflt_init();
 void task_ref(void* parameter);
 void opt_dflt_init();
@@ -16,15 +17,27 @@ void opt_dflt_init();
 /*--------------------------------*/
 
 void sd_test_init(){
-  dflt_init();
-  if (functions.sd_card) test_sd();
+        dflt_init();
+        if (functions.sd_card) test_sd();
 }
 
 void test_test(){
         dflt_init();
 
+        if (functions.sd_card) {
+                if (SD.exists("/gauge/interntemp.htm")) {
+                        server.serveStatic("/app", SD, "/gauge/interntemp.htm");
+                        functions.app_page  = true;
+                }
+        }
+}
+
+//TMP
+void test_test_mqtt(){
+        dflt_init();
+
         pin_config_s* leds= new pin_config_s[1]{
-          {1,blue_led,false,0,"LED"},
+                {1,blue_led,false,0,"LED"},
         };
 
         digital_init(leds,1);
