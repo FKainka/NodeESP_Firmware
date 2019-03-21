@@ -7,7 +7,9 @@
 #include <ArduinoJson.h> //https://arduinojson.org/assistant/?utm_source=github&utm_medium=issues
 
 /*Example APPS*/
-void onboard_led_exmpl(), mqtt_blue_led();
+void onboard_led_exmpl();
+void sd_intern_temp_exmpl(), sd_intern_hall_exmpl();
+void mqtt_blue_led();
 void btn_exmpl(),touch_exmpl(), led_exmpl(),pwm_exmpl(),adc_exmpl();
 
 /*Default Apps*/
@@ -102,41 +104,59 @@ apps_s apps_iot18[]= {
  * APPS Smarthome Lernpaket
  */
 apps_s apps_sh_lp[]= {
-        {"k1_p1",iot18_day2,"[Treppenhauslicht]","Flow: <a href='https://pastebin.com/R2MtBdVb'>'https://pastebin.com/R2MtBdVb</a> OnBoard LED (WS, AP) "},
-        {"k1_p2",iot18_day3,"[Testlampe]"," Flow: <a href='https://pastebin.com/R2MtBdVb'>'https://pastebin.com/R2MtBdVb</a> (UDP, WS, WPS)"},
-        {"iot18_day4",iot18_day4,"[IoT Calendar 2018 - Day4]","See <a href='http://iot.fkainka.de/day4-2018'>iot.fkainka.de/day4-2018</a> (UDP, WS, WPS)"},
-        {"iot18_day5",iot18_day5,"[IoT Calendar 2018 - Day5]","See <a href='http://iot.fkainka.de/day5-2018'>iot.fkainka.de/day5-2018</a> Button (UDP, WS, WPS)"},
-        {"iot18_day6",iot18_day6,"[IoT Calendar 2018 - Day6]","See <a href='http://iot.fkainka.de/day6-2018'>iot.fkainka.de/day6-2018</a> Touch (UDP, WS, WPS)"},
-        {"iot18_day7",iot18_day7,"[IoT Calendar 2018 - Day7]","See <a href='http://iot.fkainka.de/day7-2018'>iot.fkainka.de/day7-2018</a> LED (UDP, WS, WPS)"},
-        {"iot18_day8",iot18_day8,"[IoT Calendar 2018 - Day8]","See <a href='http://iot.fkainka.de/day8-2018'>iot.fkainka.de/day8-2018</a> ADC (UDP, WS, WPS)"},
-        {"iot18_day9",iot18_day9,"[IoT Calendar 2018 - Day9]","See <a href='http://iot.fkainka.de/day9-2018'>iot.fkainka.de/day9-2018</a> ADC (UDP, WS, WPS)"},
-        {"iot18_day10",iot18_day10,"[IoT Calendar 2018 - Day10]","See <a href='http://iot.fkainka.de/day10-2018'>iot.fkainka.de/day10-2018</a> Deep Sleep (UDP, ADC)"},
+        {"k1_p1",iot18_day2,"[K1_P1 - Onboard RGB-Led]","<a href='../app'>Application Page</a><br>Try out diffrent colors on the onboard RGB-LED (WPS disabled)<br>See <a href='http://iot.fkainka.de/day2-2018'>iot.fkainka.de/day2-2018</a> for details"},
+        {"k2_p1",iot18_day3,"[K2_P1 - UDP Test]","Test the UDP Communication.<br>The Board will send a Broadcast-Message every 5 seconds.<br>(UDP, WS, WPS)"},
+        {"k2_p2",iot18_day4,"[K2_P2 - UDP Button]","Test the UDP Communication.<br>The Board will send a Broadcast-Message if you press the boot button<br>(UDP, WS)"},
 
-        {"iot18_day11",iot18_day11,"[IoT Calendar 2018 - Day11]","See <a href='http://iot.fkainka.de/day11-2018'>iot.fkainka.de/day11-2018</a> (MQTT, WS, WPS)"},
-        {"iot18_day12",iot18_day12,"[IoT Calendar 2018 - Day12]","See <a href='http://iot.fkainka.de/day12-2018'>iot.fkainka.de/day12-2018</a> Button (MQTT, WS, WPS)"},
-        {"iot18_day13",iot18_day13,"[IoT Calendar 2018 - Day13]","See <a href='http://iot.fkainka.de/day13-2018'>iot.fkainka.de/day13-2018</a> Touch (MQTT, WS, WPS)"},
-        {"iot18_day14",iot18_day14,"[IoT Calendar 2018 - Day14]","See <a href='http://iot.fkainka.de/day14-2018'>iot.fkainka.de/day14-2018</a> LED (MQTT, WS, WPS)"},
-        {"iot18_day15",iot18_day15,"[IoT Calendar 2018 - Day15]","See <a href='http://iot.fkainka.de/day15-2018'>iot.fkainka.de/day15-2018</a> IR (MQTT, WPS)"},
-        {"iot18_day16",iot18_day16,"[IoT Calendar 2018 - Day16]","See <a href='http://iot.fkainka.de/day16-2018'>iot.fkainka.de/day16-2018</a> IR (MQTT, WPS)"},
-        {"iot18_day17",iot18_day17,"[IoT Calendar 2018 - Day17]","See <a href='http://iot.fkainka.de/day17-2018'>iot.fkainka.de/day17-2018</a> ADC (MQTT, WS, WPS)"},
-        {"iot18_day18",iot18_day18,"[IoT Calendar 2018 - Day18]","See <a href='http://iot.fkainka.de/day18-2018'>iot.fkainka.de/day18-2018</a> ADC (MQTT, WS, WPS)"},
-        {"iot18_day19",iot18_day19,"[IoT Calendar 2018 - Day19]","See <a href='http://iot.fkainka.de/day19-2018'>iot.fkainka.de/day19-2018</a> Cheerlights (MQTT, WS, WPS)"},
-        {"iot18_day20",iot18_day20,"[IoT Calendar 2018 - Day20]","See <a href='http://iot.fkainka.de/day20-2018'>iot.fkainka.de/day20-2018</a> Plant (MQTT, WS, WPS)"},
+        //{"iot18_day4",iot18_day4,"[IoT Calendar 2018 - Day4]","See <a href='http://iot.fkainka.de/day4-2018'>iot.fkainka.de/day4-2018</a> (UDP, WS, WPS)"},
 
-        {"iot18_day21",iot18_day21,"[IoT Calendar 2018 - Day21]","See <a href='http://iot.fkainka.de/day21-2018'>iot.fkainka.de/day21-2018</a> Sound (UDP, WS, WPS) "},
-        {"iot18_day22",iot18_day22,"[IoT Calendar 2018 - Day22]","See <a href='http://iot.fkainka.de/day22-2018'>iot.fkainka.de/day22-2018</a> Clima (MQTT, WS, WPS) "},
-        {"iot18_day23",iot18_day23,"[IoT Calendar 2018 - Day23]","See <a href='http://iot.fkainka.de/day23-2018'>iot.fkainka.de/day23-2018</a> Alarm (MQTT, WS, WPS)"},
-        {"iot18_day24",iot18_day24,"[IoT Calendar 2018 - Day24]","See <a href='http://iot.fkainka.de/day24-2018'>iot.fkainka.de/day24-2018</a> RGB (MQTT, WS, WPS)"},
-        {"",dflt_init,""} //marks end of handlers
+        //MQTT MAIN
+        {"k2_p3",iot18_day11,"[K2_P3 - MQTT Test]","Test the MQTT Connection<br>MQTT Websocket Client:<br><a href='http://www.hivemq.com/demos/websocket-client/?'>http://www.hivemq.com/demos/websocket-client</a><br>(MQTT, WS, WPS)"},
+
+        //Kapitel3 - Node RED
+        {"k3_p1",iot18_day5,"[K3_P1 - UDP Button]","Flow: <a href='https://pastebin.com/raw/Y0JdbruK'>https://pastebin.com/raw/Y0JdbruK</a><br>(UDP, WS, WPS)"},
+        {"k3_p2",iot18_day6,"[K3_P2 - UDP Touch]","Flow: <a href='https://pastebin.com/raw/0ETXksdQ'>https://pastebin.com/raw/0ETXksdQ</a><br>(UDP, WS, WPS)"},
+        {"k3_p3",iot18_day7,"[K3_P3 - Treppenhauslicht]","Flow: <a href='https://pastebin.com/raw/LPgJmYFa'>https://pastebin.com/raw/LPgJmYFa</a><br>LED (UDP, WS, WPS)"},
+        {"k3_p4",iot18_day8,"[K3_P4 - Treppenhauslicht mit Helligkeitsmessung]","Flow: <a href='https://pastebin.com/raw/ud4AANgK'>https://pastebin.com/raw/ud4AANgK</a><br>ADC (UDP, WS, WPS)"},
+        {"k3_p5",iot18_day9,"[K3_P5 - Stimmungslicht]","Flow: <a href='https://pastebin.com/raw/30SzxNi7'>https://pastebin.com/raw/30SzxNi7</a><br> ADC (UDP, WS, WPS)"},
+        {"k3_p6",iot18_day10,"[K3_P6 - Deep Sleep Messung]","Flow: <a href='https://pastebin.com/raw/0p5s9LHt'>https://pastebin.com/raw/0p5s9LHt</a><br>Deep Sleep(UDP, WS, WPS)"},
+
+        {"k3_p7",iot18_day12,"[K3_P7 - MQTT Button]","Flow: <a href='https://pastebin.com/raw/Tx66se6u'>https://pastebin.com/raw/Tx66se6u</a><br>MQTT Button (MQTT, WS, WPS)"},
+        {"k3_p8",iot18_day13,"[K3_P8 - MQTT Touch Buttons]","Flow: <a href='https://pastebin.com/raw/v3tkaYNt'>https://pastebin.com/raw/v3tkaYNt</a><br>Deep Sleep (MQTT, WS, WPS)"},
+        {"k3_p9",iot18_day14,"[K3_P9 - MQTT Smarte Lichter]","Flow: <a href='https://pastebin.com/raw/sPGPd2qm'>https://pastebin.com/raw/sPGPd2qm</a><br>MQTT Touch LED (MQTT, WS, WPS)"},
+        {"k3_p10",iot18_day17,"[K3_P10 - Zeitgesteuerte Lichter]","Flow: <a href='https://pastebin.com/raw/AuX41egb'>https://pastebin.com/raw/AuX41egb</a><br>Button (MQTT, WS, WPS)"},
+
+        {"k3_p11",iot18_day15,"[K3_P11 - Fernbedienungsempfänger]","Flow: <a href='https://pastebin.com/raw/atiq3Mt0'>https://pastebin.com/raw/atiq3Mt0</a><br>IR (MQTT, WS, WPS)"},
+        {"k3_p12",iot18_day16,"[K3_P12 - Universalfernbedienung]","Flow: <a href='https://pastebin.com/raw/zMqFJx4D'>https://pastebin.com/raw/zMqFJx4D</a><br>IR (MQTT, WS, WPS)"},
+
+        {"k3_p13",iot18_day18,"[K3_P13 - Cheerlights]","Flow: <a href='https://pastebin.com/raw/bCUX8S5n'>https://pastebin.com/raw/bCUX8S5n</a><br>PL9823 (MQTT, WS, WPS)"},
+        {"k3_p14",iot18_day24,"[K3_P14 - Bunte Lampe]","Flow: <a href='https://pastebin.com/raw/RaHARWnr'>https://pastebin.com/raw/RaHARWnr</a><br>PL9823 x2 (UDP, WS, WPS)"},
+        {"k3_p15",iot18_day19,"[K3_P15 - Dioden Messung]","Flow: <a href='https://pastebin.com/raw/hPp0Umx5'>https://pastebin.com/raw/hPp0Umx5</a><br>Diode (MQTT, WS, WPS)"},
+
+
+        //  {"k3_p14",iot18_day19,"[K3_P14 - MQTT Button]","Flow: <a href='https://pastebin.com/raw/Tx66se6u'>https://pastebin.com/raw/Tx66se6u</a><br>MQTT Button (UDP, WS, WPS)"},
+        {"k3_p16",iot18_day20,"[K3_P16 - Pflanzenwächter]","Flow: <a href='https://pastebin.com/raw/gQtgRT9C'>https://pastebin.com/raw/gQtgRT9C</a><br>Sensoren (MQTT, WS, WPS)"},
+        {"k3_p17",iot18_day22,"[K3_P17 - Klimawächter]","Flow: <a href='https://pastebin.com/raw/DegbLw4h'>https://pastebin.com/raw/DegbLw4h</a><br>Sensoren (MQTT, WS, WPS)"},
+
+        {"k3_p18",iot18_day21,"[K3_P18 - Piano]","Flow: <a href='https://pastebin.com/raw/c7KPcgDg'>https://pastebin.com/raw/c7KPcgDg</a><br>Sound (UDP, WS, WPS)"},
+        {"k3_p19",iot18_day23,"[K3_P19 - Alarmanlage]","Flow: <a href='https://pastebin.com/raw/AuX41egb'>https://pastebin.com/raw/AuX41egb</a><br>Tilt (MQTT, WS, WPS)"},
+        //  {"k3_p14",iot18_day19,"[K3_P14 - MQTT Button]","Flow: <a href='https://pastebin.com/raw/Tx66se6u'>https://pastebin.com/raw/Tx66se6u</a><br>MQTT Button (UDP, WS, WPS)"},
+          {"",dflt_init,""} //marks end of handlers
 };
 
 /**
 * Exampe APPS
  */
 apps_s apps_examples[]= {
-        {"dflt_init",dflt_init,"[init_dflt]","The default Applikation<br>(Webserver, WPS)"},
-        {"onboard_led",onboard_led_exmpl,"[Onboard RGB-LED]","<a href='../app'>OnBoard LED Application Page</a><br>Try out diffrent colors of the onboard RGB-LED (WPS-Button will deactivated)<br>See <a href='http://iot.fkainka.de/day2-2018'>iot.fkainka.de/day2-2018</a> for details"},
-        {"udp_auto_test",iot18_day3,"[UDP Test - Automated Message]","Recieve a Board Message every 5 Seconds via UDP<br>See <a href='http://iot.fkainka.de/day3-2018'>iot.fkainka.de/day3-2018</a> for details"},
+        {"dflt_init",dflt_init,"[init_dflt]","The default Application<br>(Webserver, WPS)"},
+        {"onboard_led",onboard_led_exmpl,"[Onboard RGB-LED]","<a href='../app'>Application Page</a><br>Try out diffrent colors on the onboard RGB-LED (WPS disabled)<br>See <a href='http://iot.fkainka.de/day2-2018'>iot.fkainka.de/day2-2018</a> for details"},
+
+        {"sd_intern_temp_exmpl",sd_intern_temp_exmpl,"[Intern Temperatur]","<a href='../app'>Intern Temperatur Application Page (SD)</a><br>Read out the intern temperatur Sensor via AJAX<br>Use with SD-Card and SD-Card files from <a href='http://iot.fkainka.de/XXX'>iot.fkainka.de/XXX</a>"},
+        {"sd_intern_hall_exmpl",sd_intern_hall_exmpl,"[Intern Hall Sensor]","<a href='../app'>Intern Hall-Sensor Application Page (SD)</a><br>Read out the intern hall sensor via WebSockets<br>Use with SD-Card and SD-Card files from <a href='http://iot.fkainka.de/XXX'>iot.fkainka.de/XXX</a>"},
+
+
+
+    /*    {"udp_auto_test",iot18_day3,"[UDP Test - Automated Message]","Recieve a Board Message every 5 Seconds via UDP<br>See <a href='http://iot.fkainka.de/day3-2018'>iot.fkainka.de/day3-2018</a> for details"},
         {"upd_press_test",iot18_day4,"[UDP Test - Button Press]","Recieve a Board Message via UDP every time you press the boot button<br>See <a href='http://iot.fkainka.de/day4-2018'>iot.fkainka.de/day4-2018</a> for details"},
         {"mqtt_test",iot18_day11,"[MQTT Test - Testtopic]","Try out the MQTT Connection<br>See <a href='http://iot.fkainka.de/day11-2018'>iot.fkainka.de/day11-2018</a> for details"},
         {"mqtt_blue_led",mqtt_blue_led,"[MQTT - Blue LED]","Try out the MQTT Connection and controll the blue onboard LED (commands :light_on/light_off, paramteter inverted (inv): true/false)"},
@@ -146,7 +166,7 @@ apps_s apps_examples[]= {
         {"touch_exmpl",touch_exmpl,"[Touch Example]","Two Touch-Buttons <br>(Webserver, WPS, UDP, MQTT)"},
         {"led_exmpl",led_exmpl,"[LED Example]","Two LEDs <br>(Webserver, WPS, UDP, MQTT)"},
         {"pwm_exmpl",pwm_exmpl,"[PWM-LED Example]","Two PWM-LEDs <br>(Webserver, WPS, UDP, MQTT)"},
-        {"adc_exmpl",adc_exmpl,"[ADC Example]","Two ADCs <br>(Webserver, WPS, UDP, MQTT)"},
+        {"adc_exmpl",adc_exmpl,"[ADC Example]","Two ADCs <br>(Webserver, WPS, UDP, MQTT)"},*/
 
       //  {"tvLight",tvLight,"[TV Light]","Use 30 WS2812 LEDs as TV Light"},
         {"",dflt_init,""} //marks end of handlers

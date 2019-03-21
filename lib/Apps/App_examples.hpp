@@ -21,6 +21,36 @@ void onboard_led_exmpl(){
 }
 
 
+void sd_intern_temp_exmpl(){
+        dflt_init();
+
+        if (functions.sd_card) {
+                if (SD.exists("/gauge/interntemp.htm")) {
+                        server.serveStatic("/app", SD, "/gauge/interntemp.htm");
+                        functions.app_page  = true;
+                }
+        }
+}
+
+
+void sd_intern_hall_exmpl(){
+        dflt_init();
+
+        if (functions.sd_card) {
+                if (SD.exists("/gauge/magnet_ws.htm")) {
+                        server.serveStatic("/app", SD, "/gauge/magnet_ws.htm");
+                        functions.app_page  = true;
+                }
+        }
+
+        connection_s* udp_con = new connection_s{true, false, false}; //ws, upd, mqtt
+        cmd_handler_s* check_hall = new cmd_handler_s[2]{{"get_intern_hall",get_intern_hall},{"",NULL}};
+        task_parameter_s* task_parameter = new task_parameter_s{check_hall,udp_con,200};
+        xTaskCreate(task_ref,"HALL",10000,(void*)task_parameter,1,NULL);
+}
+
+
+
 void mqtt_blue_led(){
   dflt_init();
 

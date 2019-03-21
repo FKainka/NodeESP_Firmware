@@ -40,6 +40,7 @@ void iot18_day3(){ //UDP Msg , 5 Sec
  */
 void iot18_day4(){ //UDP Msg , Boot press
         dflt_init();
+        wps_enable(false); //Changes 21.03.19
         udp_init();
         xTaskCreate([](void * parameter){
                 while(1) {

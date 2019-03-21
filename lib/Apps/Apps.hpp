@@ -46,7 +46,7 @@ bool list_apps(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
                         app_json["app"] = (exc_app->app).c_str();
                         app_json["title"] = (exc_app->title).c_str();
                         app_json["info"] = (exc_app->info).c_str();
-                        if  (String(app_set.app_exec) == exc_app->app) answ["app_running"] = exc_app->info;
+                        if  (String(app_set.app_exec) == exc_app->app) answ["app_running"] = exc_app->title+"<br>"+exc_app->info;
                         exc_app++;
                 }
         }

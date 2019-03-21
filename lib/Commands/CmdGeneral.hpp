@@ -20,14 +20,14 @@ bool testtopic(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
 }
 
 bool get_intern_temp(HANDLER_PARAMETER){
-        answ["cmd"] = msg["cmd"];
+        answ["cmd"] = "get_intern_temp";
         answ["value"] = get_intern_temp();
         hasAnsw = true;
         return true;
 }
 
 bool get_intern_hall(HANDLER_PARAMETER){
-        answ["cmd"] = msg["cmd"];
+        answ["cmd"] = "get_intern_hall";
         answ["value"] = get_intern_hall();
         hasAnsw = true;
         return true;
