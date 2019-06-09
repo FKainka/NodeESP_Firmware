@@ -26,7 +26,7 @@
 
 
 //Current Version of APP, Spiff version is also saved in config file
-#define VERSION "v1.5_28022019"
+#define VERSION "v1.5_28022019" 
 #define SPIFFS_VERSION "v1.2_16122018"
 
 #include <SPIFFS.h>
