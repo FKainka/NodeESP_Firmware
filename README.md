@@ -15,6 +15,7 @@ More Information: www.iot.fkainka.de/nodeesp
 
 ## FIX for error: C99 in esp_wps.cpp:
   Info: https://github.com/espressif/esp-idf/pull/2869/files
+
   change file .platformio/packages/framework-arduinoespressif32/tools/sdk/include/esp32/esp_wps.h
   line 81ff:
     {.manufacturer = "ESPRESSIF"},
