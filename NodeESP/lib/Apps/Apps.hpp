@@ -33,14 +33,12 @@
  * @return         true if susccesfull
  */
 bool list_apps(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
-        Serial.println(uxTaskGetStackHighWaterMark(NULL));
         answ["cmd"] = "get_app_set";    //the answear is of type: get_app_set
 
         JsonObject& app_array_json = answ.createNestedObject("apps"); //Create nestet array of APPSs
         for (int i = 0; i< len_app_lists; i++) {
                 JsonArray& app_list_array_json = app_array_json.createNestedArray(app_lists[i].info.c_str()); //trick to create array on other buffer
                 apps_s* exc_app = app_lists[i].apps_pnt;
-                Serial.println(uxTaskGetStackHighWaterMark(NULL));
                 while(exc_app->app != "") {
                         JsonObject& app_json = app_list_array_json.createNestedObject();
                         app_json["app"] = (exc_app->app).c_str();
@@ -50,7 +48,6 @@ bool list_apps(JsonObject& msg, JsonObject& answ, bool& hasAnsw){
                         exc_app++;
                 }
         }
-        Serial.println(uxTaskGetStackHighWaterMark(NULL));
         hasAnsw = true;
         return true;
 }

@@ -162,7 +162,7 @@ apps_s apps_intern[]= {
 };
 
 //List of all lists that should be available public (Selectable by Website)
-const int len_app_lists = 3;
-app_lists_s app_lists[len_app_lists]= {  {apps_examples,"Example Apps"},
+const int len_app_lists = 2;
+app_lists_s app_lists[len_app_lists]= {{apps_examples,"Example Apps"},
                             {apps_iot18,"IoT Adventcalendar 2018"}
                             };
