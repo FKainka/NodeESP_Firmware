@@ -251,7 +251,7 @@ void mqtt_init() {
         //  Serial.println("Max Packet Size: "+String(MQTT_MAX_PACKET_SIZE));
         connection.mqtt = true;
         mqtt_subscribe_topic("in");
-        xTaskCreate(mqtt_loop,"TaskMQTT",35000,NULL,2,NULL);
+        xTaskCreate(mqtt_loop,"TaskMQTT",40000,NULL,2,NULL);
 }
 
 bool test_mqtt_connection() {

@@ -140,7 +140,7 @@ apps_s apps_sh_lp[]= {
         {"k3_p17",iot18_day22,"[K3_P17 - Klimawächter]","Flow: <a href='https://pastebin.com/raw/DegbLw4h'>https://pastebin.com/raw/DegbLw4h</a><br>Sensoren (MQTT, WS, WPS)"},
 
         {"k3_p18",iot18_day21,"[K3_P18 - Piano]","Flow: <a href='https://pastebin.com/raw/c7KPcgDg'>https://pastebin.com/raw/c7KPcgDg</a><br>Sound (UDP, WS, WPS)"},
-        {"k3_p19",iot18_day23,"[K3_P19 - Alarmanlage]","Flow: <a href='https://pastebin.com/raw/AuX41egb'>https://pastebin.com/raw/AuX41egb</a><br>Tilt (MQTT, WS, WPS)"},
+        {"k3_p19",iot18_day23,"[K3_P19 - Alarmanlage]","Flow: <a href='https://pastebin.com/raw/3UkHsi4e'>https://pastebin.com/raw/3UkHsi4e</a><br>Tilt (MQTT, WS, WPS)"},
           {"",dflt_init,""} //marks end of handlers
 };
 
@@ -208,7 +208,7 @@ apps_s apps_intern[]= {
 //List of all lists that should be available public (Selectable by Website)
 const int len_app_lists = 3;
 app_lists_s app_lists[len_app_lists]= {  {apps_examples,"Example Apps"},
-                          //   {apps_iot18,"IoT Adventcalendar 2018"},
-                            {apps_sh_lp,"Smarthome Lernpaket"},
-                            {apps_coming,"ToDo Apps"}
+                            {apps_iot18,"IoT Adventcalendar 2018"},
+                            {apps_sh_lp,"Smarthome Lernpaket"}
+                            //{apps_coming,"ToDo Apps"}
                             };
