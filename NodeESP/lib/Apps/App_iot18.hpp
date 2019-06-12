@@ -349,6 +349,10 @@ void iot18_day16(){
         pinMode(ir_recv_pins[1].pin_nr, OUTPUT);
         digitalWrite(ir_recv_pins[1].pin_nr, HIGH);
 
+        //Set Pin5 (GND IR-Send) to GND
+        pinMode(5, OUTPUT);
+        digitalWrite(5, LOW);
+
         ir_recv_init();
         ir_send_init();
 
