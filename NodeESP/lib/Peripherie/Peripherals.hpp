@@ -123,8 +123,8 @@ pin_config_s onBoard_led[]= {
 }; int onBoard_led_len = sizeof(onBoard_led)/sizeof(onBoard_led[0]);
 
 pin_config_s adcs_dflt[]= {
-        {1,35,false,0,"Light"},
-        {2,36,false,0,"Temp"},
+        {1,36,false,0,"Light"},
+        {2,35,false,0,"Temp"},
         //{3,26,false,0,"Light"},
 }; int len_adcs_dflt = sizeof(adcs_dflt)/sizeof(adcs_dflt[0]);
 
