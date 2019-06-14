@@ -1,10 +1,10 @@
 {
     "spiffs": {
       "version":"v1.2_16122018",
-	  "file":"https://github.com/FKainka/NodeESP_Firmware/raw/development/bin/spiffs.bin"
+	  "file":"https://github.com/FKainka/NodeESP_Firmware/raw/master/bin/spiffs.bin"
     },
     "sketch": {
       "version":"v1.4_16122018",
-	  "file":"https://github.com/FKainka/NodeESP_Firmware/raw/development/bin/firmware.bin"
+	  "file":"https://github.com/FKainka/NodeESP_Firmware/raw/master/bin/firmware.bin"
     }
 }
