@@ -135,7 +135,7 @@ apps_s apps_sh_lp[]= {
         //{"tvLight",tvLight,"[TV Light]","Use 30 WS2812 LEDs as TV Light"},
         {"k3_p14a",tvLight,"[K3_P14 APP - TV Hintergrundbeleuchtung]","<a href='../app'>TV-Licht App Page</a><br>(UDP,WS,WPS)"},
 
-        {"k3_p15",iot18_day19,"[K3_P15 - Dioden Messung]","Flow: <a href='https://pastebin.com/raw/hPp0Umx5'>https://pastebin.com/raw/hPp0Umx5</a><br>Diode (MQTT, WS, WPS)"},
+        {"k3_p15",iot18_day19,"[K3_P15 - Feuermelder]","Flow: <a href='https://pastebin.com/raw/hPp0Umx5'>https://pastebin.com/raw/hPp0Umx5</a><br>NTC (MQTT, WS, WPS)"},
         {"k3_p16",iot18_day20,"[K3_P16 - Pflanzenwächter]","Flow: <a href='https://pastebin.com/raw/gQtgRT9C'>https://pastebin.com/raw/gQtgRT9C</a><br>Sensoren (MQTT, WS, WPS)"},
         {"k3_p17",iot18_day22,"[K3_P17 - Klimawächter]","Flow: <a href='https://pastebin.com/raw/DegbLw4h'>https://pastebin.com/raw/DegbLw4h</a><br>Sensoren (MQTT, WS, WPS)"},
 
