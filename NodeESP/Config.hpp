@@ -177,6 +177,7 @@ bool loadConfiguration() {
 
         file.close();                       // Close the file (File's destructor doesn't close the file)
         if (def_loaded) saveConfiguration(true);    //Save if changes where made (on first load for example)
+
         return true;
 }
 
@@ -247,8 +248,14 @@ bool load_gen_set(JsonObject &root){
  */
 bool load_ota_set(JsonObject &root){
         ota_set.spiffs_version = root["spiffs_version"];
+        #if AUTHORMODE
+        //ToDo: Change to actual script index.php
+        ota_set.update_url = "http://ota.fkainka.de/dev.php/?branch=development"; //update script
+        ota_set.version_url = "http://ota.fkainka.de/version_dev.json";   //Verion file 
+        #else
         ota_set.update_url = root["update_url"];
         ota_set.version_url = root["version_url"];
+        #endif
         ota_set.make_update = root["make_update"];
         return true;
 }

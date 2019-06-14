@@ -1,0 +1,10 @@
+{
+    "spiffs": {
+      "version":"v1.2_16122018",
+	  "file":"spiffs.bin"
+    },
+    "sketch": {
+      "version":"v1.4_16122018",
+	  "file":"firmware.bin"
+    }
+}
