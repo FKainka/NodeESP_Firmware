@@ -10,6 +10,7 @@ More Information: www.iot.fkainka.de/nodeesp
   * 01.03.2019 Back to Framework (1.0.2) +  TCPAsync 1.0
     * added Selected App DIV in website, changed app stile to title +  info,
     * added SD Card Support (call nodeesp.local/sd)
+  * 14.06.2019 Changed OTA Updates -> files are directly loaded from GitHub (only for development mode)
 
 ## FIX for error: C99 in esp_wps.cpp:
   Info: https://github.com/espressif/esp-idf/pull/2869/files
