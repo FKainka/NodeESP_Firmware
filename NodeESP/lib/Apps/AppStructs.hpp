@@ -21,6 +21,9 @@ void iot18_day2(), iot18_day3(), iot18_day4(), iot18_day5(),iot18_day6(), iot18_
 void iot18_day11(), iot18_day12(), iot18_day13(),iot18_day14(), iot18_day15(),iot18_day16(), iot18_day17(), iot18_day18(), iot18_day19(), iot18_day20();
 void iot18_day21(), iot18_day22(),iot18_day23(),iot18_day24();
 
+/*Smarthome LP 2019*/
+void sh19_fire();
+
 /* APPS for testing - not included most times*/
 void udp_test_init(),speaker_test(), neoPixel_test(), ir_recv_test(), adc_test(), btn_n_touch_test(), btn_n_led_test(), rf_test(), ir_test(), mqtt_test(), all_test();
 void tvLight(),test_test();
@@ -129,13 +132,13 @@ apps_s apps_sh_lp[]= {
         {"k3_p11",iot18_day15,"[K3_P11 - Fernbedienungsempfänger]","Flow: <a href='https://pastebin.com/raw/atiq3Mt0'>https://pastebin.com/raw/atiq3Mt0</a><br>IR (MQTT, WS, WPS)"},
         {"k3_p12",iot18_day16,"[K3_P12 - Universalfernbedienung]","Flow: <a href='https://pastebin.com/raw/zMqFJx4D'>https://pastebin.com/raw/zMqFJx4D</a><br>IR (MQTT, WS, WPS)"},
 
-        {"k3_p13",iot18_day18,"[K3_P13 - Cheerlights]","Flow: <a href='https://pastebin.com/raw/bCUX8S5n'>https://pastebin.com/raw/bCUX8S5n</a><br>PL9823 (MQTT, WS, WPS)"},
+        {"k3_p13",iot18_day19,"[K3_P13 - Cheerlights]","Flow: <a href='https://pastebin.com/raw/bCUX8S5n'>https://pastebin.com/raw/bCUX8S5n</a><br>PL9823 (MQTT, WS, WPS)"},
         {"k3_p14",iot18_day24,"[K3_P14 - Bunte Lampe]","Flow: <a href='https://pastebin.com/raw/RaHARWnr'>https://pastebin.com/raw/RaHARWnr</a><br>PL9823 x2 (UDP, WS, WPS)"},
 
         //{"tvLight",tvLight,"[TV Light]","Use 30 WS2812 LEDs as TV Light"},
         {"k3_p14a",tvLight,"[K3_P14 APP - TV Hintergrundbeleuchtung]","<a href='../app'>TV-Licht App Page</a><br>(UDP,WS,WPS)"},
 
-        {"k3_p15",iot18_day19,"[K3_P15 - Feuermelder]","Flow: <a href='https://pastebin.com/raw/hPp0Umx5'>https://pastebin.com/raw/hPp0Umx5</a><br>NTC (MQTT, WS, WPS)"},
+        {"k3_p15",sh19_fire,"[K3_P15 - Feuermelder]","Flow: <a href='https://pastebin.com/raw/hPp0Umx5'>https://pastebin.com/raw/hPp0Umx5</a><br>NTC (MQTT, WS, WPS)"},
         {"k3_p16",iot18_day20,"[K3_P16 - Pflanzenwächter]","Flow: <a href='https://pastebin.com/raw/gQtgRT9C'>https://pastebin.com/raw/gQtgRT9C</a><br>Sensoren (MQTT, WS, WPS)"},
         {"k3_p17",iot18_day22,"[K3_P17 - Klimawächter]","Flow: <a href='https://pastebin.com/raw/DegbLw4h'>https://pastebin.com/raw/DegbLw4h</a><br>Sensoren (MQTT, WS, WPS)"},
 

@@ -22,6 +22,7 @@
 #include "Peripherals.hpp"
 
 #include "APP_iot18.hpp"
+#include "APP_sh19.hpp"
 #include "APP_examples.hpp"
 #include "APP_tests.hpp"
 
