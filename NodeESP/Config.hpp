@@ -251,7 +251,7 @@ bool load_ota_set(JsonObject &root){
         #if AUTHORMODE
         //ToDo: Change to actual script index.php
         ota_set.update_url = "http://ota.fkainka.de/dev.php/?branch=development"; //update script
-        ota_set.version_url = "http://ota.fkainka.de/version_dev.json";   //Verion file 
+        ota_set.version_url = "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/development/version.json";   //Verion file 
         #else
         ota_set.update_url = root["update_url"];
         ota_set.version_url = root["version_url"];
