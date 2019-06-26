@@ -118,6 +118,7 @@ bool mqtt_subscribe_topic(const char* topic_end){
         sprintf(topic,"%s/%s/%s", "NodeESP",mqtt_set.client_id,topic_end);
 
         bool succ = client.subscribe(topic);
+
         succ ? Serial.printf("Subscribed to %s\n",topic) : Serial.printf("error sub to %s\n",topic);
         for (int i = 0; i<MAX_SUBS; i++) {
                 if (subscribed_topics[i]== "") {
@@ -222,6 +223,7 @@ bool mqttconnect() {
 void mqtt_loop(void * parameter){
         while(1) {
                 if (!client.connected()) {
+                  //    Serial.printf("MQTT Status code: %d\n",client.state());
                         mqttconnect();
                         resubscribe();
                 }
