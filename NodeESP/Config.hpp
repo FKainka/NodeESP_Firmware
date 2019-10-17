@@ -48,8 +48,8 @@ struct app_set_s {          //App Executtion settings
 struct ota_set_s {        //Update Settings
         const char* app_version = VERSION; //hardcoded in sketch!
         const char* spiffs_version = SPIFFS_VERSION;
-        const char* update_url = "http://ota.fkainka.de/index.php";
-        const char* version_url = "http://ota.fkainka.de/version.json";
+        const char* update_url = "http://ota.fkainka.de/dev.php";
+        const char* version_url = "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/master/version.json";
         bool make_update = false;
 } ota_set;
 
