@@ -1,6 +1,7 @@
  //******************************************************************************
  // NodeESP Firmware
- // Version 1.5 28.02.2019
+ // Version 2.0 17.10.2019
+ //
  // Copyright 2019 Fabian Kainka
  // Licensed under GNU GPL 3.0 and later, under this license absolutely no warranty given
  //
@@ -11,7 +12,14 @@
  // - 01.03.2019 Back to Framework (1.0.2) +  TCPAsync 1.0
  //    + added Selected App DIV in website, changed app stile to title +  info,
  //    + added SD Card Support (call nodeesp.local/sd)
- //
+ // - 17.10.2019: Smarthome Update
+ //     + Added Smarthome Apps
+ //     + Added Editor
+ //     + Added SD-Card support
+ //     + Extended App selection info view
+ //     + bug fixes 
+ //     + New OTA Update source (directly from GITHUB)
+ //     + spiffs: Added Editor
  //
  // FIX for error: C99 in esp_wps.cpp:
  // https://github.com/espressif/esp-idf/pull/2869/files
@@ -26,8 +34,8 @@
 
 
 //Current Version of APP, Spiff version is also saved in config file
-#define VERSION "v1.5_28022019"
-#define SPIFFS_VERSION "v1.2_16122018"
+#define VERSION "v2.0_17102019"
+#define SPIFFS_VERSION "v2.0_17102018"
 
 #include <SPIFFS.h>
 

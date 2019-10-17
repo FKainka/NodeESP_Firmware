@@ -11,6 +11,14 @@ More Information: www.iot.fkainka.de/nodeesp
     * added Selected App DIV in website, changed app stile to title +  info,
     * added SD Card Support (call nodeesp.local/sd)
   * 14.06.2019 Changed OTA Updates -> files are directly loaded from GitHub (only for development mode)
+  * 17.10.2019: Smarthome Update
+  *    + Added Smarthome Apps
+  *     + Added Editor
+  *     + Added SD-Card support
+  *     + Extended App selection info view
+  *     + bug fixes 
+  *     + New OTA Update source (directly from GITHUB)
+  *     + Spiffs: Added Editor
 
 ## FIX for error: C99 in esp_wps.cpp:
   Info: https://github.com/espressif/esp-idf/pull/2869/files
@@ -28,3 +36,5 @@ More Information: www.iot.fkainka.de/nodeesp
   * MQTT:         https://github.com/knolleary/pubsubclient
   * DAC:          https://www.xtronical.com/the-dacaudio-library-download-and-installation/
   * IR Remote:    https://github.com/SensorsIot/Arduino-IRremote
+
+
