@@ -1,0 +1,93 @@
+<!doctype html>
+<HTML>
+
+<HEAD>
+  <!--Meta Tag: set better vieppint etc. esp. for mobile devices-->
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+  <title>NanoESP</title>
+  <link rel="stylesheet" href="/style.css">
+
+</HEAD>
+
+<body>
+  <header class="headfood">
+    <h1>NanoESP (SD) - Intern Tempeatur</h1>
+  </header>
+
+  <article>
+    <div align=center>
+    <H2>NodeESP Intern Tempertur Sensor</H2>
+    <br><br>
+    <canvas id="tempGauge"></canvas>
+    </div>
+  </article>
+
+  <footer class="headfood">
+		<H2><a href= "/" style="color:white;">HOME</a></H2>
+		<div class="fooder_text"></div>
+	</footer>
+
+  <script src="/sd/scripts/gauge.js"> </script> <!-- infos: https://github.com/Mikhus/canvas-gauges  -->
+  <script language="JavaScript">
+    function eExist(elementId) {
+      var element = document.getElementById(elementId);
+      if (element !== null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    if (eExist("tempGauge")) {
+      tempGauge = new RadialGauge({
+        renderTo: ("tempGauge"),
+        highlights: [{
+            from: 0,
+            to: 20,
+            color: 'rgba(0,0,255,.5)'
+          },
+          {
+            from: 20,
+            to: 40,
+            color: 'rgba(0,255,0,.5)'
+          },
+          {
+            from: 40,
+            to: 60,
+            color: 'rgba(255,0,0,.5)'
+          },
+        ],
+        width: 200,
+        height: 200,
+        borderRadius: 2,
+        borders: 0,
+        barStrokeWidth: 2,
+        minorTicks: 5,
+        minValue: 0,
+        maxValue: 60,
+        majorTicks: [0, 10, 20, 30, 40, 50, 60],
+        value: 20,
+        units: " C",
+        colorValueBoxShadow: false
+      })
+      tempGauge.draw();
+    }
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var json_msg = JSON.parse(xhttp.responseText);
+        console.log(json_msg)
+        tempGauge.value = json_msg["value"];
+      }
+    };
+    
+    function getInternTemp(){
+       xhttp.open("GET", "/cmd?cmd=get_intern_temp", true);
+       xhttp.send();
+    }
+    
+    setInterval(getInternTemp, 5000)
+  </script>
+</body>
+</HTML>
