@@ -4,7 +4,7 @@
 	  "file":"https://github.com/FKainka/NodeESP_Firmware/raw/master/bin/spiffs.bin"
     },
     "sketch": {
-      "version":"v2.0_17102019",
+      "version":"v2.1_02112019",
 	  "file":"https://github.com/FKainka/NodeESP_Firmware/raw/master/bin/firmware.bin"
     }
 }

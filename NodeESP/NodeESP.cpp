@@ -20,6 +20,8 @@
  //     + bug fixes 
  //     + New OTA Update source (directly from GITHUB)
  //     + spiffs: Added Editor
+ // - 02.11.2019: Smarthome SD-Card Links
+ //     + Added Smarthome SD-Card Links
  //
  // FIX for error: C99 in esp_wps.cpp:
  // https://github.com/espressif/esp-idf/pull/2869/files
@@ -34,7 +36,7 @@
 
 
 //Current Version of APP, Spiff version is also saved in config file
-#define VERSION "v2.0_17102019"
+#define VERSION "v2.1_02112019"
 #define SPIFFS_VERSION "v2.0_17102019"
 
 #include <SPIFFS.h>

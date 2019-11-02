@@ -113,8 +113,8 @@ apps_s apps_sh_lp[]= {
         //Kapitel 2 - Firmware und tests
         {"k2_p2",iot18_day4,"[K2_P2 - UDP Button]","Test the UDP Communication.<br>The Board will send a Broadcast-Message if you press the boot button<br>(UDP, WS)"},
         {"k2_p3",iot18_day11,"[K2_P3 - MQTT Test]","Test the MQTT Connection<br>MQTT Websocket Client:<br><a href='http://www.hivemq.com/demos/websocket-client/?'>http://www.hivemq.com/demos/websocket-client</a><br>(MQTT, WS, WPS)"},
-        {"k2_p4",sd_intern_temp_exmpl,"[K2_P4 - Intern Temperatur]","<a href='../app'>Intern Temperatur Application Page (SD)</a><br>Read out the intern temperatur Sensor via AJAX<br>Use with SD-Card and SD-Card files from <a href='http://iot.fkainka.de/XXX'>iot.fkainka.de/XXX</a>"},
-        {"k2_p5",sd_intern_hall_exmpl,"[K2_P5 - Intern Hall]","<a href='../app'>Intern Hall-Sensor Application Page (SD)</a><br>Read out the intern hall sensor via WebSockets<br>Use with SD-Card and SD-Card files from <a href='http://iot.fkainka.de/XXX'>iot.fkainka.de/XXX</a>"},
+        {"k2_p4",sd_intern_temp_exmpl,"[K2_P4 - Intern Temperatur]","<a href='../app'>Intern Temperatur Application Page (SD)</a><br>Read out the intern temperatur Sensor via AJAX<br>Use with SD-Card and SD-Card files from <a href='https://iot.fkainka.de/maker-kit-fuer-smart-home'>https://iot.fkainka.de/maker-kit-fuer-smart-home</a>"},
+        {"k2_p5",sd_intern_hall_exmpl,"[K2_P5 - Intern Hall]","<a href='../app'>Intern Hall-Sensor Application Page (SD)</a><br>Read out the intern hall sensor via WebSockets<br>Use with SD-Card and SD-Card files from <a href='https://iot.fkainka.de/maker-kit-fuer-smart-home'>https://iot.fkainka.de/maker-kit-fuer-smart-home</a>"},
 
         //Kapitel3 - Node RED
         {"k3_p1",iot18_day4,"[K3_P1 - UDP Button]","Flow: <a href='https://pastebin.com/raw/Y0JdbruK'>https://pastebin.com/raw/Y0JdbruK</a><br>(UDP, WS, WPS)"},
