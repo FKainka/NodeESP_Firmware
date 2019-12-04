@@ -20,11 +20,12 @@
 #include "OTA.hpp"
 
 #include "Peripherals.hpp"
+#include "SdCard.hpp"
 
 #include "APP_iot18.hpp"
 #include "APP_sh19.hpp"
 #include "APP_examples.hpp"
-#include "APP_tests.hpp"
+//#include "APP_tests.hpp"
 
 /**
  * Adds a list of all available APPs to a JSON Object - Response to JSON-Request

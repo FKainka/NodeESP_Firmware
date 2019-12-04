@@ -138,43 +138,47 @@ bool loadConfiguration()
         {
                 //First Run. No Config so load default
                 Serial.println(F("No config file found. Loading default"));
-                cfg_path = dflt_con_file;
+                /*  cfg_path = dflt_con_file;
                 if (!SPIFFS.exists(cfg_path))
                 {
                         Serial.println(F("No default config file found!"));
                         return false;
-                }
+                }*/
                 def_loaded = true;
         }
-
-        //Load file and parse JSON
-        File file = SPIFFS.open(cfg_path);               // Open file for reading
-        JsonObject &root = jsonBuffer.parseObject(file); // Parse the root object
-
-        //On error  in JSON-Parsing -> return false
-        if (!root.success())
+        else
         {
-                Serial.println(F("Failed to read JSON Configuration!"));
-                file.close();
-                return false;
+
+                //Load file and parse JSON
+                File file = SPIFFS.open(cfg_path);               // Open file for reading
+                JsonObject &root = jsonBuffer.parseObject(file); // Parse the root object
+
+                //On error  in JSON-Parsing -> return false
+                if (!root.success())
+                {
+                        Serial.println(F("Failed to read JSON Configuration!"));
+                        file.close();
+                        return false;
+                }
+
+                //Get Subset of settings
+                JsonObject &gen_set_json = root["gen_set"];
+                load_gen_set(gen_set_json);
+
+                JsonObject &app_set_json = root["app_set"];
+                load_app_set(app_set_json);
+
+                JsonObject &udp_set_json = root["udp_set"];
+                load_udp_set(udp_set_json);
+
+                JsonObject &ota_set_json = root["ota_set"];
+                load_ota_set(ota_set_json);
+
+                JsonObject &mqtt_set_json = root["mqtt_set"];
+                load_mqtt_set(mqtt_set_json);
+
+                file.close(); // Close the file (File's destructor doesn't close the file)
         }
-
-        //Get Subset of settings
-        JsonObject &gen_set_json = root["gen_set"];
-        load_gen_set(gen_set_json);
-
-        JsonObject &app_set_json = root["app_set"];
-        load_app_set(app_set_json);
-
-        JsonObject &udp_set_json = root["udp_set"];
-        load_udp_set(udp_set_json);
-
-        JsonObject &ota_set_json = root["ota_set"];
-        load_ota_set(ota_set_json);
-
-        JsonObject &mqtt_set_json = root["mqtt_set"];
-        load_mqtt_set(mqtt_set_json);
-
 //Fix for Authormode Bug -> Author may use [PID] instead of Mac
 #ifndef AUTHORMODE
         String auth_id = "[PID]";
@@ -188,7 +192,6 @@ bool loadConfiguration()
         if (def_loaded)
                 dflt_set_mqtt(); //only on default load -> generates ID from MAC
 
-        file.close(); // Close the file (File's destructor doesn't close the file)
         if (def_loaded)
                 saveConfiguration(true); //Save if changes where made (on first load for example)
 
@@ -273,7 +276,7 @@ bool load_gen_set(JsonObject &root)
                 strcpy(gen_set.ap_ssid, root["ap_ssid"]);
         //gen_set.ap_ssid = root["ap_ssid"];
         if (root.containsKey("ap_pwd"))
-                strcpy(gen_set.host_name, root["host_name"]);
+                strcpy(gen_set.ap_pwd, root["ap_pwd"]);
         //gen_set.ap_pwd = root["ap_pwd"];
         if (root.containsKey("touch_threshold"))
                 gen_set.touch_threshold = root["touch_threshold"];
