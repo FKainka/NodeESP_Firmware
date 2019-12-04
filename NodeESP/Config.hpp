@@ -16,8 +16,8 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 
-const char con_file[]= "/config/config.cfg";           //Main Config-File
-const char dflt_con_file[] = "/config/dflt_config.cfg"; //Default Config-File
+char con_file[] = "/config/config.cfg";           //Main Config-File
+char dflt_con_file[] = "/config/dflt_config.cfg"; //Default Config-File
 
 char baseMacChr[13] = {0};
 char topic[27] = {0};
@@ -133,7 +133,7 @@ bool loadConfiguration()
 
         //Load default on first run
         bool def_loaded = false;
-        const char* cfg_path = con_file;
+        const char *cfg_path = con_file;
         if (!SPIFFS.exists(cfg_path))
         {
                 //First Run. No Config so load default
@@ -291,8 +291,8 @@ bool load_ota_set(JsonObject &root)
         strcpy(ota_set.spiffs_version, root["spiffs_version"]);
 #if AUTHORMODE
         //ToDo: Change to actual script index.php
-        ota_set.update_url = "http://ota.fkainka.de/dev.php/?branch=development";                                    //update script
-        ota_set.version_url = "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/development/version.json"; //Verion file
+        strcpy(ota_set.update_url, "http://ota.fkainka.de/dev.php/?branch=development");                                    //update script
+        strcpy(ota_set.version_url, "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/development/version.json"); //Verion file
 #else
         // ota_set.update_url = root["update_url"];
         strcpy(ota_set.update_url, root["update_url"]);
@@ -420,7 +420,7 @@ void load_mqtt_set(JsonObject &root)
         mqtt_set.port = root["port"];
 
 #ifdef AUTHORMODE
-        mqtt_set.client_id = MQTT_ID_AUTHOR; //on Author Mode use [PID]
+        strcpy(mqtt_set.client_id, MQTT_ID_AUTHOR); //on Author Mode use [PID]
 #else
         //mqtt_set.client_id = root["client_id"];
         strcpy(mqtt_set.client_id, root["client_id"]);
