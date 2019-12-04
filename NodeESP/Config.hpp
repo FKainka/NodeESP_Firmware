@@ -16,8 +16,8 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 
-const char *con_file = "/config/config.cfg";           //Main Config-File
-const char *dflt_con_file = "/config/dflt_config.cfg"; //Default Config-File
+char con_file[] = "/config/config.cfg";           //Main Config-File
+char dflt_con_file[] = "/config/dflt_config.cfg"; //Default Config-File
 
 char baseMacChr[13] = {0};
 char topic[27] = {0};
@@ -45,15 +45,15 @@ struct connection_s
 
 struct app_set_s
 { //App Executtion settings
-        const char *app_exec = "dflt_init";
+        char app_exec[20] = "dflt_init";
 } app_set;
 
 struct ota_set_s
-{                                          //Update Settings
-        const char *app_version = VERSION; //hardcoded in sketch!
-        const char *spiffs_version = SPIFFS_VERSION;
-        const char *update_url = "http://ota.fkainka.de/dev.php";
-        const char *version_url = "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/master/version.json";
+{                                       //Update Settings
+        char app_version[20] = VERSION; //hardcoded in sketch!
+        char spiffs_version[20] = SPIFFS_VERSION;
+        char update_url[50] = "http://ota.fkainka.de/dev.php";
+        char version_url[100] = "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/master/version.json";
         bool make_update = false;
 } ota_set;
 
@@ -61,11 +61,11 @@ struct gen_set_s
 {                                   //Generall Settings
         uint8_t wifi_con_time = 30; //Time board waits for wifi connectin
         int wifi_mode = 3;
-        const char *host_name = "NodeESP";
-        const char *mdns_name = "nodeesp";
+        char host_name[30] = "NodeESP";
+        char mdns_name[30] = "nodeesp";
         bool status_led = true;
-        const char *ap_ssid = "NodeESP";
-        const char *ap_pwd = "";
+        char ap_ssid[30] = "NodeESP";
+        char ap_pwd[30] = "";
         uint8_t touch_threshold = 30;
 } gen_set;
 
@@ -73,26 +73,26 @@ struct set_udp_s
 { //UDP Settings
         uint16_t udp_port_recv = 55057;
         uint16_t udp_port_send = 55057;
-        const char *udp_ip = "192.168.178.255";
+        char udp_ip[20] = "192.168.178.255";
         bool ack = true;
 } udp_set;
 
 struct mqtt_set_s
 { //MQTT Settings
-        const char *server_address = "broker.fkainka.de";
+        char server_address[50] = "broker.fkainka.de";
         uint16_t port = 1883;
-        const char *client_id = "";
+        char client_id[30] = "";
         bool enable = false;
 
-        const char *user_name = "";
-        const char *user_pw = "";
+        char user_name[30] = "";
+        char user_pw[30] = "";
 
-        const char *con_msg = "NanoESP32 connected";
-        const char *con_topic = "";
+        char con_msg[50] = "NanoESP32 connected";
+        char con_topic[50] = "";
         bool con_msg_retain = false;
 
-        const char *last_will_msg = "NanoESP32 disconnected";
-        const char *last_will_topic = "";
+        char last_will_msg[100] = "NanoESP32 disconnected";
+        char last_will_topic[50] = "";
         bool last_will_retain = false;
 } mqtt_set;
 
@@ -137,11 +137,11 @@ bool loadConfiguration()
         if (!SPIFFS.exists(cfg_path))
         {
                 //First Run. No Config so load default
-                Serial.println(F("No config file found. Loading default"));
+                Serial.println("No config file found. Loading default");
                 cfg_path = dflt_con_file;
                 if (!SPIFFS.exists(cfg_path))
                 {
-                        Serial.println(F("No default config file found!"));
+                        Serial.println("No default config file found!");
                         return false;
                 }
                 def_loaded = true;
@@ -216,7 +216,7 @@ bool saveConfiguration(bool reboot = true)
         // ArduinoJson 6
         // DynamicJsonDocument doc(512);
 
-       // size_t len = measureJson(doc);
+        // size_t len = measureJson(doc);
         //Serial.printf("Size: %d", len);
 
         //JsonObject obj = doc.to<JsonObject>();
@@ -262,15 +262,19 @@ bool load_gen_set(JsonObject &root)
         if (root.containsKey("wifi_con_time"))
                 gen_set.wifi_con_time = root["wifi_con_time"];
         if (root.containsKey("host_name"))
-                gen_set.host_name = root["host_name"];
+                strcpy(gen_set.host_name, root["host_name"]);
+        // gen_set.host_name = root["host_name"];
         if (root.containsKey("mdns_name"))
-                gen_set.mdns_name = root["mdns_name"];
+                strcpy(gen_set.mdns_name, root["mdns_name"]);
+        //gen_set.mdns_name = root["mdns_name"];
         if (root.containsKey("status_led"))
                 gen_set.status_led = root["status_led"];
         if (root.containsKey("ap_ssid"))
-                gen_set.ap_ssid = root["ap_ssid"];
+                strcpy(gen_set.ap_ssid, root["ap_ssid"]);
+        //gen_set.ap_ssid = root["ap_ssid"];
         if (root.containsKey("ap_pwd"))
-                gen_set.ap_pwd = root["ap_pwd"];
+                strcpy(gen_set.ap_pwd, root["ap_pwd"]);
+        //gen_set.ap_pwd = root["ap_pwd"];
         if (root.containsKey("touch_threshold"))
                 gen_set.touch_threshold = root["touch_threshold"];
         return true;
@@ -283,14 +287,17 @@ bool load_gen_set(JsonObject &root)
  */
 bool load_ota_set(JsonObject &root)
 {
-        ota_set.spiffs_version = root["spiffs_version"];
+        //ota_set.spiffs_version = root["spiffs_version"];
+        strcpy(ota_set.spiffs_version, root["spiffs_version"]);
 #if AUTHORMODE
         //ToDo: Change to actual script index.php
-        ota_set.update_url = "http://ota.fkainka.de/dev.php/?branch=development";                                    //update script
-        ota_set.version_url = "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/development/version.json"; //Verion file
+        strcpy(ota_set.update_url, "http://ota.fkainka.de/dev.php/?branch=development");                                    //update script
+        strcpy(ota_set.version_url, "https://raw.githubusercontent.com/FKainka/NodeESP_Firmware/development/version.json"); //Verion file
 #else
-        ota_set.update_url = root["update_url"];
-        ota_set.version_url = root["version_url"];
+        // ota_set.update_url = root["update_url"];
+        strcpy(ota_set.update_url, root["update_url"]);
+        //  ota_set.version_url = root["version_url"];
+        strcpy(ota_set.version_url, root["version_url"]);
 #endif
         ota_set.make_update = root["make_update"];
         return true;
@@ -336,7 +343,8 @@ bool save_gen_set(JsonObject &root)
 bool load_udp_set(JsonObject &root)
 {
         udp_set.udp_port_recv = root["udp_port_recv"];
-        udp_set.udp_ip = root["udp_ip"];
+        strcpy(udp_set.udp_ip, root["udp_ip"]);
+        //  udp_set.udp_ip = root["udp_ip"];
         udp_set.udp_port_send = root["udp_port_send"];
         udp_set.ack = root["ack"];
         return true;
@@ -364,7 +372,8 @@ bool save_udp_set(JsonObject &root)
 bool load_app_set(JsonObject &root)
 {
         if (root.containsKey("app_exec"))
-                app_set.app_exec = root["app_exec"];
+                strcpy(app_set.app_exec, root["app_exec"]);
+        // app_set.app_exec = root["app_exec"];
         return true;
 }
 
@@ -388,12 +397,15 @@ void dflt_set_mqtt()
         esp_read_mac(baseMac, ESP_MAC_WIFI_STA); // Get MAC address for WiFi station
 
         sprintf(baseMacChr, "%02X%02X%02X%02X%02X%02X", baseMac[0], baseMac[1], baseMac[2], baseMac[3], baseMac[4], baseMac[5]);
-        mqtt_set.client_id = baseMacChr;
+        strcpy(mqtt_set.client_id, baseMacChr);
+        // mqtt_set.client_id = baseMacChr;
 
         sprintf(topic, "NodeESP/%s/state", baseMacChr);
 
-        mqtt_set.con_topic = topic;
-        mqtt_set.last_will_topic = topic;
+        // mqtt_set.con_topic = topic;
+        strcpy(mqtt_set.con_topic, topic);
+        //mqtt_set.last_will_topic = topic;
+        strcpy(mqtt_set.last_will_topic, topic);
 }
 
 /**
@@ -403,25 +415,33 @@ void dflt_set_mqtt()
  */
 void load_mqtt_set(JsonObject &root)
 {
-        mqtt_set.server_address = root["server_address"];
+        //mqtt_set.server_address = root["server_address"];
+        strcpy(mqtt_set.server_address, root["server_address"]);
         mqtt_set.port = root["port"];
 
 #ifdef AUTHORMODE
-        mqtt_set.client_id = MQTT_ID_AUTHOR; //on Author Mode use [PID]
+        strcpy(mqtt_set.client_id, MQTT_ID_AUTHOR); //on Author Mode use [PID]
 #else
-        mqtt_set.client_id = root["client_id"];
+        //mqtt_set.client_id = root["client_id"];
+        strcpy(mqtt_set.client_id, root["client_id"]);
 #endif
         mqtt_set.enable = root["enable"];
 
-        mqtt_set.user_name = root["user_name"];
-        mqtt_set.user_pw = root["user_pw"];
+        //   mqtt_set.user_name = root["user_name"];
+        strcpy(mqtt_set.user_name, root["user_name"]);
+        //mqtt_set.user_pw = root["user_pw"];
+        strcpy(mqtt_set.user_pw, root["user_pw"]);
 
-        mqtt_set.con_msg = root["con_msg"];
-        mqtt_set.con_topic = root["con_topic"];
+        // mqtt_set.con_msg = root["con_msg"];
+        strcpy(mqtt_set.con_msg, root["con_msg"]);
+        //mqtt_set.con_topic = root["con_topic"];
+        strcpy(mqtt_set.con_topic, root["con_topic"]);
         mqtt_set.con_msg_retain = root["con_msg_retain"];
 
-        mqtt_set.last_will_msg = root["last_will_msg"];
-        mqtt_set.last_will_topic = root["last_will_topic"];
+        // mqtt_set.last_will_msg = root["last_will_msg"];
+        strcpy(mqtt_set.last_will_msg, root["last_will_msg"]);
+        //mqtt_set.last_will_topic = root["last_will_topic"];
+        strcpy(mqtt_set.last_will_topic, root["last_will_topic"]);
         mqtt_set.last_will_retain = root["last_will_retain"];
 }
 

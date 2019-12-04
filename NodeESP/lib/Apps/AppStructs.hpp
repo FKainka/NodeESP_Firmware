@@ -22,12 +22,12 @@ void iot18_day11(), iot18_day12(), iot18_day13(),iot18_day14(), iot18_day15(),io
 void iot18_day21(), iot18_day22(),iot18_day23(),iot18_day24();
 
 /*Smarthome LP 2019*/
-void sh19_fire();
+void sh19_fire(),tvLight(),udp_test_init();
 
 /* APPS for testing - not included most times*/
-void udp_test_init(),speaker_test(), neoPixel_test(), ir_recv_test(), adc_test(), btn_n_touch_test(), btn_n_led_test(), rf_test(), ir_test(), mqtt_test(), all_test();
+/*void udp_test_init(),speaker_test(), neoPixel_test(), ir_recv_test(), adc_test(), btn_n_touch_test(), btn_n_led_test(), rf_test(), ir_test(), mqtt_test(), all_test();
 void tvLight(),test_test();
-void sd_test_init();
+void sd_test_init();*/
 
 // TASK
 void d5_task(void * parameter);
@@ -175,9 +175,9 @@ apps_s apps_examples[]= {
 
 /**
  *  Test apps and Ideas -> Ignore for now
- */
+
 apps_s apps_coming[]= {
-        /*--------------*/
+     
         {"test_test", test_test, "[TEST TEST]", "Test what you want"},
         {"tvLight",tvLight,"[TV Light]","Use 30 WS2812 LEDs as TV Light"},
         {"sd_test_init",sd_test_init,"[SD Card Test]","Test a SD Card by Serial output etc"},
@@ -198,7 +198,7 @@ apps_s apps_coming[]= {
 
         {"",dflt_init,""} //marks end of handlers
 };
-
+ */
 /**
  * Inter apps for Updates etc
  */
