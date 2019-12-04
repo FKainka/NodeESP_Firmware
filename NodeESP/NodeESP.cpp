@@ -39,6 +39,9 @@
 #define VERSION "v2.2_04122019"
 #define SPIFFS_VERSION "v2.0_17102019"
 
+#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
+#include "esp_log.h"
+
 #include <SPIFFS.h>
 
 #include "StatusLed.hpp"    //Status LED functions
