@@ -16,8 +16,8 @@
 #include <WiFi.h>
 #include <esp_wifi.h>
 
-const char *con_file = "/config/config.cfg";           //Main Config-File
-const char *dflt_con_file = "/config/dflt_config.cfg"; //Default Config-File
+const char con_file[]= "/config/config.cfg";           //Main Config-File
+const char dflt_con_file[] = "/config/dflt_config.cfg"; //Default Config-File
 
 char baseMacChr[13] = {0};
 char topic[27] = {0};
@@ -133,15 +133,15 @@ bool loadConfiguration()
 
         //Load default on first run
         bool def_loaded = false;
-        auto cfg_path = con_file;
+        const char* cfg_path = con_file;
         if (!SPIFFS.exists(cfg_path))
         {
                 //First Run. No Config so load default
-                Serial.println(F("No config file found. Loading default"));
+                Serial.println("No config file found. Loading default");
                 cfg_path = dflt_con_file;
                 if (!SPIFFS.exists(cfg_path))
                 {
-                        Serial.println(F("No default config file found!"));
+                        Serial.println("No default config file found!");
                         return false;
                 }
                 def_loaded = true;
