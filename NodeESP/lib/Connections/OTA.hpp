@@ -35,12 +35,12 @@ bool ota_make_update(bool &new_spiffs, bool &new_app)
 {
   if (new_spiffs | new_app)
   {
-    statusLed(yellow);
+    statusLed(yellow);  
 
     if (new_spiffs)
     {
       Serial.println("Updating SPIFFS. Grap a coffe.");
-      statusLed(blink_yellow_slow); //Start blinking while trying to estblish connection
+    //  statusLed(blink_yellow_slow); //Start blinking while trying to estblish connection
 
       t_httpUpdate_return retSpiffs = ESPhttpUpdate.updateSpiffs(ota_set.update_url, ota_set.spiffs_version);
       ota_print_return(retSpiffs);
@@ -48,7 +48,7 @@ bool ota_make_update(bool &new_spiffs, bool &new_app)
     if (new_app)
     {
       Serial.println("Updating Firmware. Grap a coffe.");
-      statusLed(blink_yellow_slow); //Start blinking while trying to estblish connection
+   //   statusLed(blink_yellow_slow); //Start blinking while trying to estblish connection
 
       t_httpUpdate_return retApp = ESPhttpUpdate.update(ota_set.update_url, ota_set.app_version);
       ota_print_return(retApp);
