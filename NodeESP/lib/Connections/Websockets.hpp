@@ -75,6 +75,9 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
 
                                 if (handle_cmd_list(msg,answ,hasAnsw,cmd_handler_list.ws_list)) {
                                         if (hasAnsw) {
+                                                char ans [20] ; //Changed 04.12
+                                              //   char* ans =
+                                               strcpy(ans,answ["cmd"]);
                                                 size_t len = answ.measureLength();
                                                 AsyncWebSocketMessageBuffer * buffer = ws.makeBuffer(len); //  creates a buffer (len + 1) for you.
                                                 if (buffer) {
