@@ -19,12 +19,14 @@ More Information: www.iot.fkainka.de/nodeesp
   *     + bug fixes 
   *     + New OTA Update source (directly from GITHUB)
   *     + Spiffs: Added Editor
-    * 04.12.2019: Stability Update
-  *   New ESP32 Arduino Core
-  *   Updated libraries
-  *   Better Config
-  *   Added Fritzing Part to /doc
-  *   Better Update
+  * 04.12.2019: Stability Update
+  *    + New ESP32 Arduino Core
+  *    + Updated libraries
+  *    + Better Config
+  *    + Added Fritzing Part to /doc
+  *    + Better Update
+  * 05.12.2019: Hotfix Pin18 interfering with new SD-Card Library
+  
 
 ## FIX for error: C99 in esp_wps.cpp:
   Info: https://github.com/espressif/esp-idf/pull/2869/files

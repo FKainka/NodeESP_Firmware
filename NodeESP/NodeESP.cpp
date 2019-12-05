@@ -8,6 +8,7 @@
  // // See www.iot.fkainka.de for documentation
  //
  // Changelog:
+ // - 05.12.2019 SD-Library hotfix Pin18
  // - 28.02.2019 Updated Framework (1.7) + Libraries (TCPAsync 1.0.3)
  // - 01.03.2019 Back to Framework (1.0.2) +  TCPAsync 1.0
  //    + added Selected App DIV in website, changed app stile to title +  info,
@@ -36,7 +37,7 @@
 
 
 //Current Version of APP, Spiff version is also saved in config file
-#define VERSION "v2.2_04122019"
+#define VERSION "v2.2.1_05122019"
 #define SPIFFS_VERSION "v2.0_17102019"
 
 #include <SPIFFS.h>

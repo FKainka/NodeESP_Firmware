@@ -78,7 +78,7 @@ apps_s apps_iot18[]= {
         {"iot18_day2",iot18_day2,"[IoT Calendar 2018 - Day2]","See <a href='http://iot.fkainka.de/day2-2018'>iot.fkainka.de/day2-2018</a> OnBoard LED (WS, AP) "},
         {"iot18_day3",iot18_day3,"[IoT Calendar 2018 - Day3]","See <a href='http://iot.fkainka.de/day3-2018'>iot.fkainka.de/day3-2018</a> (UDP, WS, WPS)"},
         {"iot18_day4",iot18_day4,"[IoT Calendar 2018 - Day4]","See <a href='http://iot.fkainka.de/day4-2018'>iot.fkainka.de/day4-2018</a> (UDP, WS, WPS)"},
-        {"iot18_day5",iot18_day5,"[IoT Calendar 2018 - Day5]","See <a href='http://iot.fkainka.de/day5-2018'>iot.fkainka.de/day5-2018</a> Button (UDP, WS, WPS)"},
+        {"iot18_day5",iot18_day5,"[IoT Calendar 2018 - Day5]","See <a href='http://iot.fkainka.de/day5-2018'>iot.fkainka.de/day5-2018</a> Button (UDP, WS, WPS, NO SD!)"},
         {"iot18_day6",iot18_day6,"[IoT Calendar 2018 - Day6]","See <a href='http://iot.fkainka.de/day6-2018'>iot.fkainka.de/day6-2018</a> Touch (UDP, WS, WPS)"},
         {"iot18_day7",iot18_day7,"[IoT Calendar 2018 - Day7]","See <a href='http://iot.fkainka.de/day7-2018'>iot.fkainka.de/day7-2018</a> LED (UDP, WS, WPS)"},
         {"iot18_day8",iot18_day8,"[IoT Calendar 2018 - Day8]","See <a href='http://iot.fkainka.de/day8-2018'>iot.fkainka.de/day8-2018</a> ADC (UDP, WS, WPS)"},
@@ -117,7 +117,7 @@ apps_s apps_sh_lp[]= {
         {"k2_p5",sd_intern_hall_exmpl,"[K2_P5 - Intern Hall]","<a href='../app'>Intern Hall-Sensor Application Page (SD)</a><br>Read out the intern hall sensor via WebSockets<br>Use with SD-Card and SD-Card files from <a href='https://iot.fkainka.de/maker-kit-fuer-smart-home'>https://iot.fkainka.de/maker-kit-fuer-smart-home</a>"},
 
         //Kapitel3 - Node RED
-        {"k3_p1",iot18_day4,"[K3_P1 - UDP Button]","Flow: <a href='https://pastebin.com/raw/Y0JdbruK'>https://pastebin.com/raw/Y0JdbruK</a><br>(UDP, WS, WPS)"},
+        {"k3_p1",iot18_day4,"[K3_P1 - UDP Button]","Flow: <a href='https://pastebin.com/raw/Y0JdbruK'>https://pastebin.com/raw/Y0JdbruK</a><br>(UDP, WS, WPS, NO SD!)"},
         {"k3_p2",iot18_day6,"[K3_P2 - UDP Touch]","Flow: <a href='https://pastebin.com/raw/0ETXksdQ'>https://pastebin.com/raw/0ETXksdQ</a><br>(UDP, WS, WPS)"},
         {"k3_p3",iot18_day7,"[K3_P3 - Treppenhauslicht]","Flow: <a href='https://pastebin.com/raw/LPgJmYFa'>https://pastebin.com/raw/LPgJmYFa</a><br>LED (UDP, WS, WPS)"},
         {"k3_p4",iot18_day8,"[K3_P4 - Treppenhauslicht mit Helligkeitsmessung]","Flow: <a href='https://pastebin.com/raw/ud4AANgK'>https://pastebin.com/raw/ud4AANgK</a><br>ADC (UDP, WS, WPS)"},
